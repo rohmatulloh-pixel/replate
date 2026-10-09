@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, AlertCircle } from 'lucide-react';
 import { FOOD_TYPES, CONDITION_OPTIONS, TIME_WINDOWS, SOURCE_CONTEXTS } from '../data/foods';
 import Button from '../components/Button';
@@ -7,20 +7,40 @@ import { TRANSLATIONS, getActiveLanguage } from '../utils/i18n';
 export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage() }) {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.id;
 
-  const [formData, setFormData] = useState({
+  const [activePreset, setActivePreset] = useState('default');
+  const [userEditedNotes, setUserEditedNotes] = useState(false);
+
+  const [formData, setFormData] = useState(() => ({
     foodTypeId: 'cooked-rice',
     quantity: '8',
     unit: 'kg',
     conditionId: 'suitable',
     timeWindowId: '1_3h',
     sourceContextId: 'Catering',
-    notes: 'Stored in clean commercial stainless pans with lids.'
-  });
+    notes: t.report.defaultNotes || 'Disimpan dalam wadah tertutup bersih food-grade dengan suhu aman.'
+  }));
 
   const [errors, setErrors] = useState({});
 
-  const loadPreset = (preset) => {
-    setFormData(preset);
+  // Synchronize notes with language switch if user hasn't typed custom notes
+  useEffect(() => {
+    if (!userEditedNotes) {
+      if (activePreset === 'rice') {
+        setFormData(prev => ({ ...prev, notes: t.report.presetRiceNotes }));
+      } else if (activePreset === 'veggies') {
+        setFormData(prev => ({ ...prev, notes: t.report.presetVeggiesNotes }));
+      } else if (activePreset === 'bread') {
+        setFormData(prev => ({ ...prev, notes: t.report.presetBreadNotes }));
+      } else {
+        setFormData(prev => ({ ...prev, notes: t.report.defaultNotes }));
+      }
+    }
+  }, [lang, activePreset, userEditedNotes, t]);
+
+  const loadPreset = (presetKey, presetPayload) => {
+    setActivePreset(presetKey);
+    setUserEditedNotes(false);
+    setFormData(presetPayload);
     setErrors({});
   };
 
@@ -50,14 +70,14 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
 
     const reportPayload = {
       foodTypeId: formData.foodTypeId,
-      foodName: selectedFood.name,
-      category: selectedFood.category,
+      foodName: getFoodText(formData.foodTypeId).name || selectedFood.name,
+      category: getFoodText(formData.foodTypeId).category || selectedFood.category,
       quantity: parseFloat(formData.quantity),
       unit: formData.unit,
       conditionId: formData.conditionId,
-      conditionLabel: selectedCondition.label,
+      conditionLabel: getConditionText(formData.conditionId).label || selectedCondition.label,
       timeWindowId: formData.timeWindowId,
-      availableTimeLabel: selectedTime.label,
+      availableTimeLabel: getTimeWindowText(formData.timeWindowId) || selectedTime.label,
       sourceContextId: formData.sourceContextId,
       notes: formData.notes.trim()
     };
@@ -65,6 +85,11 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
     if (onSubmitReport) {
       onSubmitReport(reportPayload);
     }
+  };
+
+  // Helper for translated food type
+  const getFoodText = (foodId) => {
+    return t.foodTypes?.[foodId] || { name: foodId, category: '' };
   };
 
   // Helper for translated condition
@@ -100,14 +125,14 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
           </span>
           <button
             type="button"
-            onClick={() => loadPreset({
+            onClick={() => loadPreset('rice', {
               foodTypeId: 'cooked-rice',
               quantity: '8',
               unit: 'kg',
               conditionId: 'suitable',
               timeWindowId: '1_3h',
               sourceContextId: 'Catering',
-              notes: 'Banquet unserved hotel pans. Maintained >62°C in hot-holding Cambros.'
+              notes: t.report.presetRiceNotes
             })}
             className="px-3.5 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-950 font-extrabold border border-amber-300 transition-all shadow-sm active:scale-95"
           >
@@ -115,14 +140,14 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
           </button>
           <button
             type="button"
-            onClick={() => loadPreset({
+            onClick={() => loadPreset('veggies', {
               foodTypeId: 'fresh-vegetables',
               quantity: '4.2',
               unit: 'kg',
               conditionId: 'fresh_excellent',
               timeWindowId: '3_6h',
               sourceContextId: 'Restaurant',
-              notes: 'Clean prep celery and root vegetables from lunch shift.'
+              notes: t.report.presetVeggiesNotes
             })}
             className="px-3.5 py-1.5 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-950 font-extrabold border border-emerald-300 transition-all shadow-sm active:scale-95"
           >
@@ -130,14 +155,14 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
           </button>
           <button
             type="button"
-            onClick={() => loadPreset({
+            onClick={() => loadPreset('bread', {
               foodTypeId: 'bread-pastries',
               quantity: '3',
               unit: 'kg',
               conditionId: 'near_window',
               timeWindowId: 'over_6h',
               sourceContextId: 'Retail',
-              notes: 'Artisan sourdough loaves and baguette ends.'
+              notes: t.report.presetBreadNotes
             })}
             className="px-3.5 py-1.5 rounded-full bg-yellow-100 hover:bg-yellow-200 text-yellow-950 font-extrabold border border-yellow-300 transition-all shadow-sm active:scale-95"
           >
@@ -156,6 +181,7 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {FOOD_TYPES.map((type) => {
               const isSelected = formData.foodTypeId === type.id;
+              const foodInfo = getFoodText(type.id);
               return (
                 <button
                   key={type.id}
@@ -169,10 +195,10 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
                 >
                   <div>
                     <span className={`block text-xs font-display ${isSelected ? 'font-black text-brand-950' : 'font-extrabold text-slate-800'}`}>
-                      {type.name}
+                      {foodInfo.name}
                     </span>
                     <span className={`block text-[11px] font-sans capitalize mt-0.5 ${isSelected ? 'text-brand-700 font-bold' : 'text-slate-500'}`}>
-                      {type.category}
+                      {foodInfo.category}
                     </span>
                   </div>
                   {isSelected && (
@@ -202,7 +228,7 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
                 type="number"
                 step="0.1"
                 min="0.1"
-                placeholder="e.g. 8.0"
+                placeholder={t.report.qtyPlaceholder || (lang === 'id' ? 'Contoh: 8.0' : 'e.g. 8.0')}
                 value={formData.quantity}
                 onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                 className="w-full p-3.5 rounded-2xl bg-slate-50 border-2 border-slate-200 text-slate-900 text-base font-display font-extrabold focus:outline-none focus:border-brand-500 focus:bg-white"
@@ -247,7 +273,7 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
           <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800">
             {t.report.f3} <span className="text-coral-500">*</span>
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {CONDITION_OPTIONS.map((cond) => {
               const isSelected = formData.conditionId === cond.id;
               const condText = getConditionText(cond.id);
@@ -372,7 +398,10 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
           <textarea
             rows="2"
             value={formData.notes}
-            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+            onChange={(e) => {
+              setUserEditedNotes(true);
+              setFormData({ ...formData, notes: e.target.value });
+            }}
             placeholder={t.report.f6Placeholder}
             className="w-full p-3.5 rounded-2xl bg-slate-50 border-2 border-slate-200 text-slate-900 text-xs font-sans focus:outline-none focus:border-brand-500 focus:bg-white"
           />

@@ -145,13 +145,6 @@ export const CONDITION_OPTIONS = [
     scoreFactor: 64,
     description: 'Requires immediate redistribution or secondary culinary processing today.',
     recommendedRoute: 'PROCESS'
-  },
-  {
-    id: 'not_suitable',
-    label: 'Not Suitable for Direct Redistribution',
-    scoreFactor: 22,
-    description: 'Sensory degradation or broken temperature threshold. Safe only for composting / bio-recovery.',
-    recommendedRoute: 'ORGANIC'
   }
 ];
 

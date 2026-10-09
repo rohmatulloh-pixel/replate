@@ -75,12 +75,28 @@ export const TRANSLATIONS = {
       unitPortions: 'Porsi Makan',
       submitBtn: 'Hitung Rute Penyelamatan ✨',
       calculating: 'Menghitung Viabilitas...',
+      qtyPlaceholder: 'Contoh: 8.0',
+      defaultNotes: 'Disimpan dalam wadah tertutup bersih food-grade dengan suhu aman.',
+      presetRiceNotes: 'Nasi prasmanan belum tersentuh. Suhu terjaga >60°C dalam wadah Cambro.',
+      presetVeggiesNotes: 'Bahan sayuran segar bersih dari shift siang, kondisi prima siap olah.',
+      presetBreadNotes: 'Roti sourdough dan baguette segar sisa batch produksi hari ini.',
+    },
+    // Food Types Translations
+    foodTypes: {
+      'cooked-rice': { name: 'Nasi Matang', category: 'Siap Saji' },
+      'bread-pastries': { name: 'Roti & Kue', category: 'Roti & Gandum' },
+      'prepared-meals': { name: 'Prasmanan & Makanan Matang', category: 'Siap Saji' },
+      'fresh-vegetables': { name: 'Sayuran Daun & Umbi Segar', category: 'Bahan Segar' },
+      'fruits': { name: 'Buah Segar (Kebun & Jeruk)', category: 'Bahan Segar' },
+      'packaged-dry-goods': { name: 'Sembako & Bahan Kering', category: 'Bahan Kering' },
+      'dairy-beverages': { name: 'Susu & Minuman Nabati', category: 'Produk Susu' },
+      'other': { name: 'Makanan Surplus Lainnya', category: 'Siap Saji' }
     },
     // Conditions
     conditions: {
       fresh_excellent: {
         label: 'Sangat Segar & Bersih',
-        desc: 'Belum disentuh, baru selesai disiapkan atau belum dipajang.'
+        desc: 'Belum disentuh, baru selesai disiapkan dalam peralatan komersial bersih.'
       },
       suitable: {
         label: 'Layak & Tersimpan Baik',
@@ -90,24 +106,29 @@ export const TRANSLATIONS = {
         label: 'Mendekati Batas Aman',
         desc: 'Masih aman tapi harus segera dikonsumsi atau diolah ulang hari ini.'
       },
-      compromised: {
-        label: 'Tidak Layak Konsumsi Manusia',
-        desc: 'Suhu ruang terlalu lama, tekstur berubah. Wajib dialihkan ke kompos/biogas.'
+      not_suitable: {
+        label: 'Tidak Layak Konsumsi Langsung',
+        desc: 'Suhu ruang terlalu lama, tekstur berubah. Hanya aman untuk kompos / bio-energi.'
       }
     },
     // Time Windows
     timeWindows: {
-      less_1h: 'Kurang dari 1 Jam (Sangat Mendesak)',
+      under_1h: '< 1 Jam (Sangat Mendesak)',
+      less_1h: '< 1 Jam (Sangat Mendesak)',
       '1_3h': '1 – 3 Jam (Optimal)',
       '3_6h': '3 – 6 Jam (Cukup Waktu)',
-      over_6h: 'Lebih dari 6 Jam (Fleksibel)'
+      over_6h: '> 6 Jam (Fleksibel)'
     },
     // Source Contexts
     sourceContexts: {
       Catering: 'Katering & Acara',
       Restaurant: 'Restoran & Bistro',
-      Bakery: 'Bakery & Kafe',
-      Retail: 'Supermarket / Ritel'
+      Retail: 'Supermarket / Ritel',
+      Event: 'Acara / Konferensi',
+      Bakery: 'Toko Roti & Kafe',
+      School: 'Kantin Sekolah / Kampus',
+      Household: 'Rumah Tangga / Warga',
+      Other: 'Sumber Lainnya'
     },
     // Assessment Page
     assessment: {
@@ -259,6 +280,22 @@ export const TRANSLATIONS = {
       unitPortions: 'Portions / Servings',
       submitBtn: 'Assess Surplus Now ✨',
       calculating: 'Calculating Viability...',
+      qtyPlaceholder: 'e.g. 8.0',
+      defaultNotes: 'Stored in clean food-grade covered containers at safe temperature.',
+      presetRiceNotes: 'Banquet unserved hotel pans. Maintained >60°C in thermal carriers.',
+      presetVeggiesNotes: 'Clean prep vegetables from lunch shift, sound condition for processing.',
+      presetBreadNotes: 'Artisan sourdough loaves and baguette ends from daily batch.',
+    },
+    // Food Types Translations
+    foodTypes: {
+      'cooked-rice': { name: 'Cooked Rice', category: 'Prepared' },
+      'bread-pastries': { name: 'Bread & Pastries', category: 'Bakery' },
+      'prepared-meals': { name: 'Prepared Buffet & Meals', category: 'Prepared' },
+      'fresh-vegetables': { name: 'Fresh Vegetables', category: 'Produce' },
+      'fruits': { name: 'Fresh Fruits (Orchard & Citrus)', category: 'Produce' },
+      'packaged-dry-goods': { name: 'Packaged & Dry Groceries', category: 'Packaged' },
+      'dairy-beverages': { name: 'Dairy & Plant Beverages', category: 'Dairy' },
+      'other': { name: 'Other Edible Surplus', category: 'Prepared' }
     },
     // Conditions
     conditions: {
@@ -274,24 +311,29 @@ export const TRANSLATIONS = {
         label: 'Near Holding Window Limit',
         desc: 'Wholesome but must be eaten or culinary upcycled today.'
       },
-      compromised: {
-        label: 'Compromised / Inedible',
-        desc: 'Exceeded safe temperatures. Mandatory diversion to composting/biogas.'
+      not_suitable: {
+        label: 'Not Suitable for Direct Redistribution',
+        desc: 'Exceeded safe holding temperatures. Safe only for composting / bio-energy.'
       }
     },
     // Time Windows
     timeWindows: {
-      less_1h: 'Under 1 Hour (Critical Urgency)',
+      under_1h: '< 1 Hour (Urgent)',
+      less_1h: '< 1 Hour (Urgent)',
       '1_3h': '1 – 3 Hours (Optimal)',
       '3_6h': '3 – 6 Hours (Adequate Window)',
-      over_6h: 'Over 6 Hours (Flexible)'
+      over_6h: '> 6 Hours (Flexible)'
     },
     // Source Contexts
     sourceContexts: {
       Catering: 'Catering & Events',
       Restaurant: 'Restaurant & Bistro',
+      Retail: 'Supermarket / Retail',
+      Event: 'Conference & Event',
       Bakery: 'Bakery & Cafe',
-      Retail: 'Supermarket / Retail'
+      School: 'School & Institutional',
+      Household: 'Household & Neighborhood',
+      Other: 'Other Source'
     },
     // Assessment Page
     assessment: {

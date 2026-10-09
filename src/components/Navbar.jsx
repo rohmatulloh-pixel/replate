@@ -3,6 +3,36 @@ import { Menu, X, Sparkles } from 'lucide-react';
 import { getReports, loadDemoData } from '../utils/storage';
 import { TRANSLATIONS, getActiveLanguage, setActiveLanguage } from '../utils/i18n';
 
+// Real SVG Flags for cross-platform support (Windows laptops, macOS, iOS, Android)
+function FlagID({ className = "w-4 h-3" }) {
+  return (
+    <svg
+      className={`${className} inline-block rounded-[2px] shadow-xs shrink-0 overflow-hidden border border-black/15 align-middle`}
+      viewBox="0 0 640 480"
+      aria-hidden="true"
+    >
+      <rect width="640" height="240" fill="#E70011" />
+      <rect y="240" width="640" height="240" fill="#FFFFFF" />
+    </svg>
+  );
+}
+
+function FlagGB({ className = "w-4 h-3" }) {
+  return (
+    <svg
+      className={`${className} inline-block rounded-[2px] shadow-xs shrink-0 overflow-hidden border border-black/15 align-middle`}
+      viewBox="0 0 60 30"
+      aria-hidden="true"
+    >
+      <rect width="60" height="30" fill="#012169" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#FFFFFF" strokeWidth="6" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="3.5" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#FFFFFF" strokeWidth="10" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" />
+    </svg>
+  );
+}
+
 export default function Navbar({ activePage, onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState(() => getActiveLanguage());
@@ -111,22 +141,24 @@ export default function Navbar({ activePage, onNavigate }) {
             title="Switch Language / Ganti Bahasa"
           >
             <span
-              className={`px-2.5 py-1 rounded-full transition-all ${
+              className={`px-2.5 py-1 rounded-full transition-all flex items-center gap-1.5 ${
                 lang === 'id'
                   ? 'bg-brand-500 text-white shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              🇮🇩 ID
+              <FlagID className="w-4 h-3" />
+              <span>ID</span>
             </span>
             <span
-              className={`px-2.5 py-1 rounded-full transition-all ${
+              className={`px-2.5 py-1 rounded-full transition-all flex items-center gap-1.5 ${
                 lang === 'en'
                   ? 'bg-brand-500 text-white shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              🇬🇧 EN
+              <FlagGB className="w-4 h-3" />
+              <span>EN</span>
             </span>
           </button>
 
@@ -150,9 +182,20 @@ export default function Navbar({ activePage, onNavigate }) {
           <button
             type="button"
             onClick={toggleLanguage}
-            className="px-2.5 py-1 rounded-full text-xs font-display font-extrabold bg-slate-100 border border-slate-200 text-slate-700"
+            className="px-2.5 py-1 rounded-full text-xs font-display font-extrabold bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 flex items-center gap-1.5 transition-all"
+            title="Switch Language / Ganti Bahasa"
           >
-            {lang === 'id' ? '🇮🇩 ID' : '🇬🇧 EN'}
+            {lang === 'id' ? (
+              <>
+                <FlagID className="w-4 h-3" />
+                <span>ID</span>
+              </>
+            ) : (
+              <>
+                <FlagGB className="w-4 h-3" />
+                <span>EN</span>
+              </>
+            )}
           </button>
 
           <button
