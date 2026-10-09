@@ -54,7 +54,7 @@ export default function Navbar({ activePage, onNavigate }) {
   };
 
   return (
-    <header className="sticky top-3 z-50 px-3 sm:px-6 transition-all">
+    <header className="sticky top-0 z-50 pt-3 px-3 sm:px-6 transition-all">
       <div className="max-w-6xl mx-auto bg-white/95 backdrop-blur-md rounded-full shadow-card border border-white/80 py-2.5 px-4 sm:px-6 flex items-center justify-between">
         {/* Brand Logo */}
         <div
@@ -137,10 +137,10 @@ export default function Navbar({ activePage, onNavigate }) {
               loadDemoData();
               window.dispatchEvent(new Event('replate:storage-update'));
             }}
-            className="px-4 py-2 rounded-full text-xs font-display font-extrabold bg-sun-100 hover:bg-sun-200 text-amber-950 border border-sun-300 transition-all shadow-sm flex items-center gap-1.5"
+            className="px-4 py-2 rounded-full text-xs font-display font-extrabold bg-sun-500 hover:bg-sun-600 text-amber-950 border-2 border-sun-300 transition-all shadow-sun flex items-center gap-1.5 hover:scale-105 active:scale-95"
             title="Load sample scenarios"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <Sparkles className="w-3.5 h-3.5 text-amber-900" />
             <span>{t.nav.sampleData}</span>
           </button>
         </div>
@@ -201,7 +201,7 @@ export default function Navbar({ activePage, onNavigate }) {
                 loadDemoData();
                 setMobileMenuOpen(false);
               }}
-              className="w-full py-2.5 rounded-full text-xs font-display font-extrabold bg-sun-100 text-amber-950 border border-sun-300"
+              className="w-full py-2.5 rounded-full text-xs font-display font-extrabold bg-sun-500 hover:bg-sun-600 text-amber-950 border-2 border-sun-300 shadow-sun"
             >
               ✨ {t.nav.sampleData}
             </button>

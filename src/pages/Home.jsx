@@ -20,7 +20,7 @@ export default function Home({ onNavigate, lang = getActiveLanguage() }) {
       {/* =========================================================
           HERO SECTION
       ========================================================= */}
-      <section className="relative pt-8 sm:pt-14 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#BAE6FD]/60 via-[#E0F2FE]/50 to-[#F0F9FF] rounded-b-[48px] sm:rounded-b-[64px] border-b border-sky-200/60 overflow-hidden">
+      <section className="relative -mt-[74px] pt-24 sm:pt-28 pb-16 px-4 sm:px-6 lg:px-8 bg-hero-sky rounded-b-[48px] sm:rounded-b-[64px] border-b border-sky-200/60 overflow-hidden">
         <div className="absolute top-10 left-10 text-3xl opacity-30 select-none animate-pulse">☁️</div>
         <div className="absolute top-20 right-16 text-4xl opacity-30 select-none animate-pulse">☁️</div>
         <div className="absolute top-8 right-1/4 text-xl select-none">✨</div>
