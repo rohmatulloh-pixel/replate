@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    background-color: #F0F9FF;
+    color: #1E293B;
+  }
+
+  body {
+    min-height: 100vh;
+    font-family: "Nunito", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    background-color: #F0F9FF;
+    color: #1E293B;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: "Fredoka", "Nunito", sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  .font-mono {
+    font-family: "JetBrains Mono", monospace;
+  }
+}
+
+@layer utilities {
+  .bg-hero-sky {
+    background: linear-gradient(180deg, #BAE6FD 0%, #E0F2FE 55%, #F0F9FF 100%);
+  }
+  .bg-mint-soft {
+    background: linear-gradient(180deg, #F0FDF4 0%, #DCFCE7 100%);
+  }
+  .bg-teal-gradient {
+    background: linear-gradient(135deg, #00A896 0%, #028090 100%);
+  }
+  .bg-sun-gradient {
+    background: linear-gradient(135deg, #FBC02D 0%, #F59E0B 100%);
+  }
+}
+
+/* Custom friendly scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E0F2FE;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2DD4BF;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00A896;
+}

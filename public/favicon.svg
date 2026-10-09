@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- Outer Plate Rim -->
+  <circle cx="24" cy="24" r="21" stroke="#253827" stroke-width="2.5" />
+  <!-- Inner Recessed Plate Base -->
+  <circle cx="24" cy="24" r="14.5" stroke="#738F62" stroke-width="1.5" stroke-dasharray="2 3" opacity="0.6" />
+  <!-- Dynamic Route Arrow Arc: food moving from center through plate rim to new route -->
+  <path d="M15 25C15 20.0294 19.0294 16 24 16C28.9706 16 33 20.0294 33 25C33 28.5 30.5 31.5 27 32" stroke="#253827" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Arrow Head pointing forward/outward -->
+  <path d="M29 29L27 32.5L23.5 30" stroke="#C26B43" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Central Origin Pulse Dot -->
+  <circle cx="15" cy="25" r="2.5" fill="#C26B43" />
+</svg>

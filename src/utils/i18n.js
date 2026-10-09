@@ -1,0 +1,389 @@
+// REPLATE Bilingual i18n Dictionary (Indonesian & English)
+
+export const TRANSLATIONS = {
+  id: {
+    // Navigation
+    nav: {
+      home: 'Beranda',
+      report: 'Lapor Surplus',
+      journeys: 'Perjalanan',
+      impact: 'Dampak',
+      insights: 'Simulasi & Wawasan',
+      sampleData: 'Data Demo',
+      reportButton: '+ Lapor Surplus',
+      activeBadge: 'Aktif',
+    },
+    // Home Page
+    home: {
+      badge: 'Makanan Harus Bergerak. Bukan Terbuang!',
+      heroTitle: 'Beri Makanan Surplus Rute Berguna ✨',
+      heroSubtitle: 'Platform pintar dan deterministik yang membantu surplus makanan menemukan rute terbaik sebelum basi dan menjadi sampah.',
+      startNow: 'Mulai Selamatkan Pangan',
+      viewJourneys: 'Lihat Pengiriman Aktif 🚚',
+      trust: {
+        safe: 'Rute Aman & Terverifikasi',
+        deterministic: '100% Mesin Deterministik',
+        proximity: 'Pencocokan Jarak Terdekat',
+        impact: 'Dampak Lingkungan Nyata',
+      },
+      streamsTitle: 'Pilih Berdasarkan Jenis Pangan',
+      streamsSubtitle: 'Pilih kategori makanan untuk melihat potensi penyelamatan dan rute tujuannya.',
+      activeTitle: 'Operasi Penyelamatan Aktif',
+      activeSubtitle: 'Makanan berlebih yang sedang bergerak dari dapur menuju mitra penerima.',
+      viewAll: 'Lihat Semua Perjalanan →',
+      featuredBadge: 'Skenario Unggulan',
+      featuredTitle: 'Misi Penyelamatan Nasi Katering',
+      featuredDesc: 'Lihat bagaimana mesin REPLATE menyelamatkan 8 kg nasi liwet sisa acara resepsi, menjaga standar suhu, dan mencocokkannya ke Dapur Umum dalam 45 menit.',
+      featuredBtn: 'Mulai Uji Skenario Ini →',
+      reviewsTitle: 'Suara Mitra Dapur & Komunitas',
+      reviewsSubtitle: 'Ulasan langsung dari pengelola dapur, relawan, dan manajer katering.',
+      ctaTitle: 'Siap Menyelamatkan Makanan Hari Ini?',
+      ctaSubtitle: 'Laporkan sisa makanan dari dapur, restoran, atau acaramu sekarang juga.',
+      ctaBtn: 'Lapor Makanan Surplus Sekarang ✨',
+    },
+    // Food Streams
+    streams: {
+      cookedRice: 'Nasi Matang',
+      cookedRiceTag: 'Urgensi Tinggi',
+      bakeryGrains: 'Roti & Pastry',
+      bakeryGrainsTag: 'Bisa Diolah',
+      freshVeggies: 'Sayur Segar',
+      freshVeggiesTag: 'Bahan Segar',
+      freshFruits: 'Buah Segar',
+      freshFruitsTag: 'Siap Makan',
+      preparedMeals: 'Makanan Siap Saji',
+      preparedMealsTag: 'Prasmanan / Buffet',
+      packagedGoods: 'Bahan Kering',
+      packagedGoodsTag: 'Stok Gudang',
+    },
+    // Report Page
+    report: {
+      title: 'Lapor Surplus Makanan',
+      subtitle: 'Masukkan detail makanan yang Anda miliki. Sistem akan menghitung kelayakan dan mencocokkannya dengan tujuan terbaik.',
+      presetsLabel: 'Preset Cepat:',
+      presetRice: '🍱 8 kg Nasi (Katering)',
+      presetVeggies: '🥦 4.2 kg Sayuran (Resto)',
+      presetBread: '🥖 3 kg Roti (Bakery)',
+      f1: '01. Jenis & Kategori Pangan',
+      f2: '02. Jumlah & Volume',
+      f3: '03. Kondisi Makanan Saat Ini',
+      f4: '04. Sisa Waktu Aman Konsumsi',
+      f5: '05. Asal / Sumber Makanan',
+      f6: '06. Catatan Tambahan & Wadah Simpan (Opsional)',
+      f6Placeholder: 'Contoh: Disimpan dalam wadah tertutup food-grade, suhu terjaga, bebas alergen...',
+      unitKg: 'Kilogram (KG)',
+      unitPortions: 'Porsi Makan',
+      submitBtn: 'Hitung Rute Penyelamatan ✨',
+      calculating: 'Menghitung Viabilitas...',
+    },
+    // Conditions
+    conditions: {
+      fresh_excellent: {
+        label: 'Sangat Segar & Bersih',
+        desc: 'Belum disentuh, baru selesai disiapkan atau belum dipajang.'
+      },
+      suitable: {
+        label: 'Layak & Tersimpan Baik',
+        desc: 'Disimpan dalam wadah bersih, suhu aman, rasa dan aroma normal.'
+      },
+      near_window: {
+        label: 'Mendekati Batas Aman',
+        desc: 'Masih aman tapi harus segera dikonsumsi atau diolah ulang hari ini.'
+      },
+      compromised: {
+        label: 'Tidak Layak Konsumsi Manusia',
+        desc: 'Suhu ruang terlalu lama, tekstur berubah. Wajib dialihkan ke kompos/biogas.'
+      }
+    },
+    // Time Windows
+    timeWindows: {
+      less_1h: 'Kurang dari 1 Jam (Sangat Mendesak)',
+      '1_3h': '1 – 3 Jam (Optimal)',
+      '3_6h': '3 – 6 Jam (Cukup Waktu)',
+      over_6h: 'Lebih dari 6 Jam (Fleksibel)'
+    },
+    // Source Contexts
+    sourceContexts: {
+      Catering: 'Katering & Acara',
+      Restaurant: 'Restoran & Bistro',
+      Bakery: 'Bakery & Kafe',
+      Retail: 'Supermarket / Ritel'
+    },
+    // Assessment Page
+    assessment: {
+      title: 'Hasil Penilaian Rute Surplus',
+      subtitle: 'Hasil evaluasi deterministik untuk',
+      reAssessBtn: '← Nilai Makanan Lain',
+      rescueScore: 'Skor Penyelamatan',
+      recommendedRoute: 'Rute yang Direkomendasikan',
+      whyRoute: 'Mengapa Rute Ini?',
+      destinationsTitle: 'Mitra Penerima yang Cocok',
+      bestMatch: 'REKOMENDASI TERBAIK',
+      compatibility: 'Kecocokan',
+      selectDestination: 'Pilih Tujuan Ini →',
+      selectedDestination: 'Tujuan Terpilih ✓',
+      confirmBtn: 'Konfirmasi & Mulai Pengiriman 🚚',
+    },
+    // Journeys Page
+    journey: {
+      title: 'Pelacakan Pengiriman Makanan',
+      subtitle: 'Pantau status serah terima makanan dari dapur Anda hingga sampai dan disajikan di tujuan.',
+      newRescue: '+ Mulai Pengiriman Baru',
+      filterAll: 'Semua',
+      filterActive: 'Sedang Berjalan',
+      filterCompleted: 'Selesai',
+      emptyTitle: 'Belum ada pengiriman makanan yang berjalan',
+      emptyDesc: 'Saat Anda melaporkan makanan dan memilih mitra tujuan, status perjalanannya akan tercatat di sini.',
+      advanceBtn: 'Perbarui Status Pengiriman →',
+      deleteBtn: 'Hapus',
+      steps: {
+        REPORTED: 'Tercatat',
+        ASSESSED: 'Selesai Dinilai',
+        ROUTE_SELECTED: 'Rute Disetujui',
+        MATCHED: 'Mitra Terpilih',
+        RESCUE_INITIATED: 'Sedang Diantar (In Transit)',
+        RECEIVED: 'Diterima & Terselamatkan ✅',
+      }
+    },
+    // Impact Page
+    impact: {
+      title: 'Dampak Nyata Penyelamatan',
+      subtitle: 'Pengukuran terverifikasi makanan yang berhasil diselamatkan dari TPA beserta manfaat sosial dan lingkungannya.',
+      totalKg: 'Kg Pangan Terselamatkan',
+      servings: 'Porsi Makan Disediakan',
+      co2: 'Kg Emisi CO₂e Dicegah',
+      water: 'Liter Air Dihemat',
+      summaryTitle: 'Pencapaian Kolektif',
+      methodologyNote: 'Dihitung dengan standar konversi global (0.35 kg/porsi, model emisi US EPA WARM 2.5 kg CO₂e/kg pangan).',
+    },
+    // Insights Page
+    insights: {
+      title: 'Simulasi Pencegahan Surplus',
+      subtitle: 'Gunakan simulator interaktif untuk melihat bagaimana efisiensi porsi dapat mencegah makanan terbuang sejak hulu.',
+      simCardTitle: 'Simulator Pencegahan Dapur',
+      plannedLabel: 'Rata-rata Porsi yang Direncanakan:',
+      bufferLabel: 'Estimasi Buffer Kelebihan Produksi (%):',
+      resultsTitle: 'Potensi Penghematan Dapur:',
+      wasteAvoided: 'Kg Makanan Dicegah Menjadi Sampah / Bulan',
+      costSaved: 'Estimasi Penghematan Bahan Pangan / Bulan',
+    },
+    // Common
+    common: {
+      highPriority: 'Prioritas Tinggi',
+      mediumPriority: 'Prioritas Sedang',
+      lowPriority: 'Prioritas Rendah',
+      routeRedistribute: 'Distribusi Langsung',
+      routeProcess: 'Pengolahan Ulang',
+      routeOrganic: 'Kompos / Organik',
+      inTransit: 'Dalam Pengantaran',
+      rescued: 'Terselamatkan',
+      loadSample: 'Muat Data Contoh',
+      clearData: 'Hapus Semua Data',
+      destination: 'Tujuan',
+      status: 'Status',
+      notes: 'Catatan',
+    }
+  },
+
+  en: {
+    // Navigation
+    nav: {
+      home: 'Home',
+      report: 'Report Surplus',
+      journeys: 'Journeys',
+      impact: 'Impact',
+      insights: 'Insights & Simulator',
+      sampleData: 'Sample Data',
+      reportButton: '+ Report Surplus',
+      activeBadge: 'Active',
+    },
+    // Home Page
+    home: {
+      badge: 'Food Should Move. Not Waste!',
+      heroTitle: 'Give Surplus Food Another Route ✨',
+      heroSubtitle: 'A smart and deterministic platform helping surplus food find its next useful route before it turns to waste.',
+      startNow: 'Start Rescuing Food',
+      viewJourneys: 'See Active Journeys 🚚',
+      trust: {
+        safe: 'Safe & Verified Routing',
+        deterministic: '100% Deterministic Engine',
+        proximity: 'Proximity Matched',
+        impact: 'Real-Time Climate Impact',
+      },
+      streamsTitle: 'Explore by Food Stream',
+      streamsSubtitle: 'Select a food category to assess rescue viability and tailored intake routes.',
+      activeTitle: 'Active Rescue Operations',
+      activeSubtitle: 'Surplus moving from commercial kitchens to verified community programs.',
+      viewAll: 'View All Journeys →',
+      featuredBadge: 'Featured Scenario',
+      featuredTitle: 'Catering Rice Rescue Mission',
+      featuredDesc: 'See how REPLATE prevents 8 kg of wholesome banquet rice from landfill disposal, verifies temperature standards, and routes it to Community Kitchen Alpha in 45 minutes.',
+      featuredBtn: 'Test This Scenario →',
+      reviewsTitle: 'Loved by Kitchen Teams',
+      reviewsSubtitle: 'Direct feedback from community chefs, volunteers, and surplus managers.',
+      ctaTitle: 'Ready to Rescue Surplus Food Today?',
+      ctaSubtitle: 'Report surplus food from your commercial kitchen, catering, or event now.',
+      ctaBtn: 'Report Surplus Food Now ✨',
+    },
+    // Food Streams
+    streams: {
+      cookedRice: 'Cooked Rice',
+      cookedRiceTag: 'High Urgency',
+      bakeryGrains: 'Bakery & Grains',
+      bakeryGrainsTag: 'Upcyclable',
+      freshVeggies: 'Fresh Veggies',
+      freshVeggiesTag: 'Fresh Produce',
+      freshFruits: 'Fresh Fruits',
+      freshFruitsTag: 'Direct Snack',
+      preparedMeals: 'Prepared Meals',
+      preparedMealsTag: 'Hot Buffets',
+      packagedGoods: 'Packaged Goods',
+      packagedGoodsTag: 'Pantry Bulk',
+    },
+    // Report Page
+    report: {
+      title: 'Report Surplus Food',
+      subtitle: 'Tell us what surplus you have. Our deterministic engine calculates viability and pairs it with the best regional destination.',
+      presetsLabel: 'Quick Scenarios:',
+      presetRice: '🍱 8 kg Rice (Catering)',
+      presetVeggies: '🥦 4.2 kg Veggies (Restaurant)',
+      presetBread: '🥖 3 kg Bread (Bakery)',
+      f1: '01. Food Type & Category',
+      f2: '02. Quantity & Volume',
+      f3: '03. Current Food Condition',
+      f4: '04. Safe Holding Window',
+      f5: '05. Food Source Context',
+      f6: '06. Additional Notes & Holding Containers (Optional)',
+      f6Placeholder: 'e.g. Stored in clean gastro pans, hot holding verified, allergy notations...',
+      unitKg: 'Kilograms (KG)',
+      unitPortions: 'Portions / Servings',
+      submitBtn: 'Assess Surplus Now ✨',
+      calculating: 'Calculating Viability...',
+    },
+    // Conditions
+    conditions: {
+      fresh_excellent: {
+        label: 'Fresh & Untouched',
+        desc: 'Unserved, freshly prepared in clean commercial equipment.'
+      },
+      suitable: {
+        label: 'Wholesome & Properly Stored',
+        desc: 'Stored in clean containers at safe temperature, normal aroma.'
+      },
+      near_window: {
+        label: 'Near Holding Window Limit',
+        desc: 'Wholesome but must be eaten or culinary upcycled today.'
+      },
+      compromised: {
+        label: 'Compromised / Inedible',
+        desc: 'Exceeded safe temperatures. Mandatory diversion to composting/biogas.'
+      }
+    },
+    // Time Windows
+    timeWindows: {
+      less_1h: 'Under 1 Hour (Critical Urgency)',
+      '1_3h': '1 – 3 Hours (Optimal)',
+      '3_6h': '3 – 6 Hours (Adequate Window)',
+      over_6h: 'Over 6 Hours (Flexible)'
+    },
+    // Source Contexts
+    sourceContexts: {
+      Catering: 'Catering & Events',
+      Restaurant: 'Restaurant & Bistro',
+      Bakery: 'Bakery & Cafe',
+      Retail: 'Supermarket / Retail'
+    },
+    // Assessment Page
+    assessment: {
+      title: 'Surplus Assessment Results',
+      subtitle: 'Deterministic viability evaluation for',
+      reAssessBtn: '← Re-assess Another Batch',
+      rescueScore: 'Rescue Score',
+      recommendedRoute: 'Recommended Route',
+      whyRoute: 'Why this route?',
+      destinationsTitle: 'Matched Intake Partners',
+      bestMatch: 'RECOMMENDED BEST MATCH',
+      compatibility: 'Compatibility',
+      selectDestination: 'Select This Destination →',
+      selectedDestination: 'Destination Selected ✓',
+      confirmBtn: 'Confirm Route & Dispatch 🚚',
+    },
+    // Journeys Page
+    journey: {
+      title: 'Rescue Journey Tracker',
+      subtitle: 'Follow the custodial handover from your kitchen to the recipient destination.',
+      newRescue: '+ Start New Rescue',
+      filterAll: 'All',
+      filterActive: 'In Motion',
+      filterCompleted: 'Completed',
+      emptyTitle: 'No rescue journeys active yet',
+      emptyDesc: 'Once you report surplus and select a destination partner, a live custody timeline will be tracked here.',
+      advanceBtn: 'Advance Journey Status →',
+      deleteBtn: 'Delete',
+      steps: {
+        REPORTED: 'Reported',
+        ASSESSED: 'Assessed',
+        ROUTE_SELECTED: 'Route Confirmed',
+        MATCHED: 'Partner Matched',
+        RESCUE_INITIATED: 'In Transit 🚚',
+        RECEIVED: 'Received & Rescued ✅',
+      }
+    },
+    // Impact Page
+    impact: {
+      title: 'Verified Rescue Impact',
+      subtitle: 'Auditable metrics on surplus food diverted from landfills, alongside verified social and climate benefits.',
+      totalKg: 'Kg Food Rescued',
+      servings: 'Servings Provided',
+      co2: 'Kg CO₂e Avoided',
+      water: 'Liters Water Saved',
+      summaryTitle: 'Collective Achievements',
+      methodologyNote: 'Calculated using institutional benchmarks (0.35 kg/serving, US EPA WARM 2.5 kg CO₂e/kg food).',
+    },
+    // Insights Page
+    insights: {
+      title: 'Surplus Prevention Simulator',
+      subtitle: 'Interactive operational simulator to analyze how adjusting prep batching prevents upstream waste.',
+      simCardTitle: 'Kitchen Surplus Prevention Simulator',
+      plannedLabel: 'Average Planned Servings per Service:',
+      bufferLabel: 'Estimated Over-Prep Buffer (%):',
+      resultsTitle: 'Kitchen Prevention Savings:',
+      wasteAvoided: 'Kg Food Prevented from Waste / Month',
+      costSaved: 'Estimated Food Cost Saved / Month',
+    },
+    // Common
+    common: {
+      highPriority: 'High Priority',
+      mediumPriority: 'Medium Priority',
+      lowPriority: 'Low Priority',
+      routeRedistribute: 'Direct Redistribution',
+      routeProcess: 'Secondary Processing',
+      routeOrganic: 'Organic Recovery',
+      inTransit: 'In Transit',
+      rescued: 'Rescued',
+      loadSample: 'Load Sample Data',
+      clearData: 'Clear All Data',
+      destination: 'Destination',
+      status: 'Status',
+      notes: 'Notes',
+    }
+  }
+};
+
+// Storage helper for language preference
+export const getActiveLanguage = () => {
+  try {
+    return localStorage.getItem('replate_lang_v1') || 'id';
+  } catch {
+    return 'id';
+  }
+};
+
+export const setActiveLanguage = (lang) => {
+  try {
+    localStorage.setItem('replate_lang_v1', lang);
+    window.dispatchEvent(new CustomEvent('replate:language-change', { detail: lang }));
+  } catch (err) {
+    console.error('Failed to save language', err);
+  }
+};
