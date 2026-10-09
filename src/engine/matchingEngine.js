@@ -21,7 +21,7 @@ export function matchDestinations({
   unit = 'kg',
   recommendedRoute,
   timeWindowId
-}) {
+}, lang = 'id') {
   const foodType = FOOD_TYPES.find(f => f.id === foodTypeId) || FOOD_TYPES[0];
   const qtyInKg = unit === 'portions' ? quantity * 0.35 : Number(quantity) || 1;
 
@@ -82,7 +82,14 @@ export function matchDestinations({
     const matchScore = Math.min(100, Math.max(20, Math.round(rawTotal)));
 
     // Compatibility Checklist
-    const checklist = [
+    const checklist = lang === 'id' ? [
+      { label: 'Kesesuaian jenis pangan', passed: foodCompat >= 80, detail: dest.acceptedFoodTypes.includes(foodType.id) ? 'Kecocokan langsung' : 'Kategori sesuai' },
+      { label: 'Kesesuaian rute penanganan', passed: routeCompat >= 80, detail: `Mendukung rute ${recommendedRoute}` },
+      { label: 'Kapasitas penerimaan', passed: capacityFit >= 80, detail: `Kapasitas intake ${dest.currentAvailableCapacityKg} kg` },
+      { label: 'Kesesuaian jam intake', passed: timeCompat >= 80, detail: dest.operatingWindow },
+      { label: 'Jarak & kedekatan', passed: distanceScore >= 70, detail: `${dest.demoDistanceKm} km dari lokasi` },
+      { label: 'Tingkat urgensi kebutuhan', passed: needScore >= 75, detail: `Prioritas kebutuhan ${dest.urgencyNeed === 'high' ? 'TINGGI' : dest.urgencyNeed === 'medium' ? 'SEDANG' : 'STANDAR'}` }
+    ] : [
       { label: 'Food compatibility', passed: foodCompat >= 80, detail: dest.acceptedFoodTypes.includes(foodType.id) ? 'Direct match' : 'Category fit' },
       { label: 'Route compatibility', passed: routeCompat >= 80, detail: `${recommendedRoute} supported` },
       { label: 'Capacity available', passed: capacityFit >= 80, detail: `${dest.currentAvailableCapacityKg} kg intake capacity` },
@@ -92,7 +99,11 @@ export function matchDestinations({
     ];
 
     // Explainable rationale
-    const rationale = [
+    const rationale = lang === 'id' ? [
+      dest.acceptedFoodTypes.includes(foodType.id) ? `Menerima langsung jenis ${foodType.name}` : `Menerima kategori ${foodType.category}`,
+      `Kapasitas intake ${dest.currentAvailableCapacityKg} kg siap menampung ${qtyInKg.toFixed(1)} kg`,
+      `Berjarak ${dest.demoDistanceKm} km dengan jendela intake terbuka`
+    ] : [
       dest.acceptedFoodTypes.includes(foodType.id) ? `Directly accepts ${foodType.name}` : `Accepts ${foodType.category} category`,
       `Intake capacity of ${dest.currentAvailableCapacityKg} kg easily handles ${qtyInKg.toFixed(1)} kg`,
       `Located ${dest.demoDistanceKm} km away with open intake operating window`

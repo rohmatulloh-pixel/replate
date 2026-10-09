@@ -34,7 +34,7 @@ export default function ScoreBreakdown({ score, priority, breakdown, rationale, 
         </div>
 
         <div>
-          <PriorityBadge priority={priority} className="text-sm px-4 py-1.5" />
+          <PriorityBadge priority={priority} className="text-sm px-4 py-1.5" lang={lang} />
         </div>
       </div>
 

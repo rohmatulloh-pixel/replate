@@ -18,7 +18,7 @@ export function calculateRescueScore({
   unit = 'kg',
   conditionId,
   timeWindowId
-}) {
+}, lang = 'id') {
   // 1. Resolve Food Type
   const foodType = FOOD_TYPES.find(f => f.id === foodTypeId) || FOOD_TYPES[FOOD_TYPES.length - 1];
 
@@ -90,7 +90,8 @@ export function calculateRescueScore({
     conditionScore,
     urgencyScore,
     destinationFitScore,
-    timeObj
+    timeObj,
+    lang
   });
 
   return {
@@ -102,31 +103,31 @@ export function calculateRescueScore({
         score: conditionScore,
         weight: RESCUE_SCORE_WEIGHTS.condition,
         contribution: Math.round(conditionScore * RESCUE_SCORE_WEIGHTS.condition * 10) / 10,
-        label: 'Condition Integrity'
+        label: lang === 'id' ? 'Kondisi Makanan' : 'Condition Integrity'
       },
       urgency: {
         score: urgencyScore,
         weight: RESCUE_SCORE_WEIGHTS.urgency,
         contribution: Math.round(urgencyScore * RESCUE_SCORE_WEIGHTS.urgency * 10) / 10,
-        label: 'Rescue Urgency'
+        label: lang === 'id' ? 'Urgensi Waktu' : 'Rescue Urgency'
       },
       quantity: {
         score: quantityScore,
         weight: RESCUE_SCORE_WEIGHTS.quantity,
         contribution: Math.round(quantityScore * RESCUE_SCORE_WEIGHTS.quantity * 10) / 10,
-        label: 'Volume Viability'
+        label: lang === 'id' ? 'Kelayakan Volume' : 'Volume Viability'
       },
       distributionEase: {
         score: distributionEaseScore,
         weight: RESCUE_SCORE_WEIGHTS.distributionEase,
         contribution: Math.round(distributionEaseScore * RESCUE_SCORE_WEIGHTS.distributionEase * 10) / 10,
-        label: 'Distribution Ease'
+        label: lang === 'id' ? 'Kemudahan Distribusi' : 'Distribution Ease'
       },
       destinationCompatibility: {
         score: destinationFitScore,
         weight: RESCUE_SCORE_WEIGHTS.destinationCompatibility,
         contribution: Math.round(destinationFitScore * RESCUE_SCORE_WEIGHTS.destinationCompatibility * 10) / 10,
-        label: 'Destination Compatibility'
+        label: lang === 'id' ? 'Kecocokan Tujuan' : 'Destination Compatibility'
       }
     },
     rationale,
@@ -140,10 +141,38 @@ function generateScoreRationale({
   conditionScore,
   urgencyScore,
   destinationFitScore,
-  timeObj
+  timeObj,
+  lang = 'id'
 }) {
   const points = [];
 
+  if (lang === 'id') {
+    if (conditionScore >= 85) {
+      points.push('kondisi makanan dilaporkan sangat baik dan higienis untuk langsung disalurkan');
+    } else if (conditionScore < 50) {
+      points.push('kondisi makanan mendekati batas aman sehingga dialihkan ke daur ulang organik');
+    }
+
+    if (urgencyScore >= 88) {
+      points.push('sisa waktu konsumsi mendesak, memerlukan penjemputan segera');
+    } else {
+      points.push('jendela pengiriman yang fleksibel memungkinkan perutean terencana');
+    }
+
+    if (destinationFitScore >= 85) {
+      points.push('beberapa mitra komunitas yang cocok memiliki kapasitas penerimaan yang aktif');
+    }
+
+    if (points.length === 0) {
+      points.push('parameter logistik standar terpenuhi');
+    }
+
+    const priorityLabel = priority?.min >= 80 ? 'PRIORITAS TINGGI' : (priority?.min >= 60 ? 'PRIORITAS SEDANG' : 'PRIORITAS RENDAH');
+    const factorsJoined = points.join('; ');
+    return `Surplus ini memperoleh Skor Penyelamatan ${finalScore}/100 (${priorityLabel}) karena: ${factorsJoined}.`;
+  }
+
+  // English fallback
   if (conditionScore >= 85) {
     points.push('reported condition is favorable and wholesome for rapid dispatch');
   } else if (conditionScore < 50) {
@@ -151,7 +180,7 @@ function generateScoreRationale({
   }
 
   if (urgencyScore >= 88) {
-    points.push(`available rescue window is tight (${timeObj.label}), prioritizing immediate transit`);
+    points.push(`available rescue window is tight (${timeObj?.label || 'tight'}), prioritizing immediate transit`);
   } else {
     points.push('flexible dispatch window enables planned routing');
   }
@@ -165,6 +194,5 @@ function generateScoreRationale({
   }
 
   const factorsJoined = points.join('; ');
-
   return `This surplus achieved a ${finalScore}/100 Rescue Score (${priority.label}) because: ${factorsJoined}.`;
 }

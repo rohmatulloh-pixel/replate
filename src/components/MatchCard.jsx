@@ -3,6 +3,45 @@ import { Check, MapPin, Clock, ShieldCheck, ArrowRight, Sparkles } from 'lucide-
 import Button from './Button';
 import { TRANSLATIONS, getActiveLanguage } from '../utils/i18n';
 
+const DESTINATION_TRANSLATIONS_ID = {
+  'dest-kitchen-a': {
+    name: 'Dapur Umum Alpha',
+    type: 'Dapur Umum Komunitas',
+    description: 'Dapur umum pusat yang menyajikan makanan hangat bagi 450+ warga rentan setiap hari.',
+    operatingWindow: 'Buka hingga 21:00 (Layanan Aktif)'
+  },
+  'dest-foodbank-b': {
+    name: 'Bank Pangan Metropolitan Beta',
+    type: 'Pusat Distribusi Bank Makanan',
+    description: 'Gudang logistik regional yang menyalurkan bahan kering, sembako, dan hasil panen segar.',
+    operatingWindow: 'Buka 08:00 - 18:00 (Dermaga Penerimaan Tersedia)'
+  },
+  'dest-center-c': {
+    name: 'Rumah Singgah & Komunitas C',
+    type: 'Program Makan Rumah Singgah',
+    description: 'Tempat penampungan darurat yang menyediakan sarapan hangat, makan siang, dan makan malam.',
+    operatingWindow: 'Penerimaan 24 Jam untuk Makanan Hangat'
+  },
+  'dest-school-d': {
+    name: 'Pusat Nutrisi Remaja Delta',
+    type: 'Program Nutrisi Remaja & Anak',
+    description: 'Inisiatif sepulang sekolah yang menyediakan buah segar dan camilan bergizi bagi siswa.',
+    operatingWindow: 'Penerimaan antara 13:00 - 17:30'
+  },
+  'dest-processing-e': {
+    name: 'Sentra Transformasi Pangan E',
+    type: 'Laboratorium Daur Ulang Pangan',
+    description: 'Fasilitas transformasi kuliner yang mengolah surplus pangan menjadi saus, selai, dan kaldu.',
+    operatingWindow: 'Penerimaan setiap hari 09:00 - 19:00'
+  },
+  'dest-organic-f': {
+    name: 'Pusat Kompos Bio-Energi F',
+    type: 'Fasilitas Pengomposan & Bio-Hub',
+    description: 'Fasilitas pengomposan aerobik yang mengubah sisa organik menjadi kompos penyubur tanah.',
+    operatingWindow: 'Penerimaan 07:00 - 20:00'
+  }
+};
+
 export default function MatchCard({
   match,
   isBestMatch = false,
@@ -12,6 +51,12 @@ export default function MatchCard({
 }) {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.id;
   const { destination, matchScore, checklist, rationale } = match;
+
+  const destTranslation = (lang === 'id' && DESTINATION_TRANSLATIONS_ID[destination.id]) || {};
+  const destName = destTranslation.name || destination.name;
+  const destType = destTranslation.type || destination.type;
+  const destDesc = destTranslation.description || destination.description;
+  const destWindow = destTranslation.operatingWindow || destination.operatingWindow;
 
   return (
     <div
@@ -35,15 +80,15 @@ export default function MatchCard({
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-5 border-b border-slate-100">
         <div>
           <span className="text-xs font-display font-extrabold uppercase text-brand-600 tracking-wider block mb-1">
-            {destination.type}
+            {destType}
           </span>
 
           <h3 className="text-2xl font-display font-black text-brand-900">
-            {destination.name}
+            {destName}
           </h3>
 
           <p className="text-xs text-slate-600 mt-1 max-w-xl font-sans font-semibold">
-            {destination.description}
+            {destDesc}
           </p>
         </div>
 
@@ -68,7 +113,7 @@ export default function MatchCard({
         </div>
         <div className="flex items-center gap-2">
           <Clock className="w-4 h-4 text-brand-600 shrink-0" />
-          <span>{destination.operatingWindow}</span>
+          <span>{destWindow}</span>
         </div>
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-brand-600 shrink-0" />

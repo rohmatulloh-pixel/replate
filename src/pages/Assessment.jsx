@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { calculateRescueScore } from '../engine/rescueScore';
 import { determineRoute } from '../engine/routeEngine';
 import { matchDestinations } from '../engine/matchingEngine';
+import { getFoodDisplayName } from '../utils/calculations';
 import ScoreBreakdown from '../components/ScoreBreakdown';
 import MatchCard from '../components/MatchCard';
 import { RouteBadge } from '../components/StatusBadge';
@@ -32,15 +33,15 @@ export default function Assessment({
   }, [pendingReport, lang]);
 
   const assessmentResult = useMemo(() => {
-    const scoreResult = calculateRescueScore(reportData);
-    const routeResult = determineRoute(reportData);
+    const scoreResult = calculateRescueScore(reportData, lang);
+    const routeResult = determineRoute(reportData, lang);
     const matchedDestinations = matchDestinations({
       foodTypeId: reportData.foodTypeId,
       quantity: reportData.quantity,
       unit: reportData.unit,
       recommendedRoute: routeResult.route,
       timeWindowId: reportData.timeWindowId
-    });
+    }, lang);
 
     return {
       score: scoreResult.score,
@@ -54,7 +55,7 @@ export default function Assessment({
       safetyNotice: routeResult.safetyNotice,
       matches: matchedDestinations
     };
-  }, [reportData]);
+  }, [reportData, lang]);
 
   const PROCESSING_STEPS = lang === 'id' ? [
     'MEMERIKSA KARAKTERISTIK SURPLUS...',
@@ -136,7 +137,7 @@ export default function Assessment({
             {t.assessment.title}
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 font-sans font-semibold">
-            {t.assessment.subtitle} <strong>{reportData.quantity} {reportData.unit} {reportData.foodName}</strong>.
+            {t.assessment.subtitle} <strong>{reportData.quantity} {reportData.unit} {getFoodDisplayName(reportData.foodTypeId, reportData.foodName, lang)}</strong>.
           </p>
         </div>
 
@@ -159,6 +160,7 @@ export default function Assessment({
             priority={assessmentResult.priority}
             breakdown={assessmentResult.scoreBreakdown}
             rationale={assessmentResult.rationale}
+            lang={lang}
           />
         </div>
 
@@ -174,7 +176,7 @@ export default function Assessment({
               </span>
             </div>
             <div className="mt-2">
-              <RouteBadge route={assessmentResult.route} className="text-xs px-3 py-1 font-extrabold" />
+              <RouteBadge route={assessmentResult.route} className="text-xs px-3 py-1 font-extrabold" lang={lang} />
             </div>
           </div>
 
