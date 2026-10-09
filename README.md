@@ -1,140 +1,207 @@
-# REPLATE — Give Surplus Food Another Route
+# 🍽️ REPLATE — Give Surplus Food Another Route
 
-> **"Food should move. Not waste."**
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Live%20on%20Vercel-success?style=for-the-badge&logo=vercel" alt="Vercel Status" />
+  <img src="https://img.shields.io/badge/React-19.2-61dafb?style=for-the-badge&logo=react" alt="React 19" />
+  <img src="https://img.shields.io/badge/Vite-8.3-646CFF?style=for-the-badge&logo=vite" alt="Vite" />
+  <img src="https://img.shields.io/badge/TailwindCSS-3.4-38bdf8?style=for-the-badge&logo=tailwindcss" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Bilingual-ID%20%F0%9F%87%AE%F0%9F%87%A9%20%7C%20EN%20%F0%9F%87%AC%F0%9F%87%A7-amber?style=for-the-badge" alt="Bilingual" />
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License" />
+</p>
 
-**REPLATE** is a smart, deterministic food-surplus decision and rescue platform developed for the **Food Waste & Supply Chain** competition. It helps kitchens, caterers, and food businesses assess surplus food, determine the most viable routing strategy, match with compatible intake destinations, track real-time custody handovers, and measure verified environmental and nutritional impact.
+<p align="center">
+  <b>🌐 Live Website:</b> <a href="https://replate-omega.vercel.app" target="_blank">https://replate-omega.vercel.app</a><br/>
+  <b>📦 GitHub Repository:</b> <a href="https://github.com/rohmatulloh-pixel/replate" target="_blank">https://github.com/rohmatulloh-pixel/replate</a>
+</p>
+
+---
+
+## 📖 Tentang REPLATE
+
+> **"Food should move. Not waste."**  
+> *(Makanan harus bergerak, bukan terbuang.)*
+
+**REPLATE** adalah platform manajemen dan penyelamatan surplus pangan cerdas (*Intelligent Food Surplus Routing & Upstream Prevention Platform*). Platform ini dirancang untuk menjembatani bisnis F&B, hotel, katering, restoran, dan penyelenggara acara dengan ekosistem penyelamatan makanan (bank makanan, panti asuhan, dapur sosial, dan pengolah kompos).
+
+REPLATE tidak hanya membantu menyalurkan makanan berlebih ke hilir, tetapi juga menganalisis pola surplus berulang agar pelaku usaha dapat **mencegah pemborosan di hulu (*upstream prevention*)**, menghemat anggaran operasional dapur, dan menekan emisi gas rumah kaca.
 
 ```text
-SURPLUS → ASSESS → SCORE → ROUTE → MATCH → RESCUE → IMPACT
+SURPLUS LAPORAN ➔ PENILAIAN SKOR ➔ RUTE HIERARKI ➔ REKOMENDASI MITRA ➔ PELACAKAN LOGISTIK ➔ DAMPAK ESG & WAWASAN
 ```
 
 ---
 
-## 🌟 Key Highlights & Innovation
+## ⚠️ Permasalahan yang Dihadapi (Problem Statement)
 
-1. **Deterministic Rescue Decision Engine (100% Rule-Based):**
-   - Zero black-box hallucinations. All scoring calculations are mathematically verifiable JavaScript linear combinations based on 5 weighted supply-chain criteria (Condition 30%, Urgensi 25%, Volume 15%, Distribusi 15%, Tujuan 15%).
-2. **Multi-Tier Safety Routing Gates:**
-   - **`REDISTRIBUTE`**: Direct human nourishment to community kitchens and shelters.
-   - **`PROCESS`**: Culinary transformation and upcycling (croutons, purees, dehydrated ingredients).
-   - **`ORGANIC`**: Mandatory biological diversion to composting/bio-gas when safety thresholds are exceeded. Never human consumption.
-3. **Proximity & Capacity Matching Algorithm:**
-   - Evaluates recipient dietary scope, refrigeration capacity, operating hours, and transit distance.
-4. **Bilingual Support (ID 🇮🇩 / EN 🇬🇧):**
-   - Seamless one-click language toggle across all pages, forms, and metrics.
-5. **Local-First Architecture:**
-   - 100% browser-based persistence using `localStorage`. No external database or login required. Works fully offline after build.
+1. **Paradoks Sampah Pangan Indonesia:**
+   * Indonesia membuang **23–48 juta ton makanan per tahun** (Kajian Bappenas). Kerugian ekonomi mencapai lebih dari Rp 200–550 triliun per tahun.
+   * Di saat yang sama, jutaan masyarakat masih menghadapi kerentanan gizi dan stunting.
+2. **Keterbatasan Waktu & Kebingungan Dapur (*Shelf-Life Crisis*):**
+   * Makanan siap santap memiliki masa simpan kritis (beberapa jam sebelum basi).
+   * Restoran dan katering sering kali tidak memiliki saluran distribusi cepat, sehingga opsi tercepat yang diambil adalah langsung membuangnya ke TPA.
+3. **Krisis Iklim dari Gas Metana ($CH_4$):**
+   * Makanan organik yang membusuk di TPA tanpa oksigen menghasilkan gas metana, yang memiliki potensi pemanasan global puluhan kali lipat lebih agresif daripada $CO_2$.
+4. **Tanpa Evaluasi Pencegahan (*Over-Ordering* Berulang):**
+   * Dapur komersial sering mengalami kelebihan porsi yang sama berulang kali karena tidak memiliki data analitik untuk memperbaiki perencanaan belanja bahan baku.
 
 ---
 
-## 🚀 Quick Start Guide
+## ✨ Fitur-Fitur Utama Platform
 
-### Prerequisites
-- Node.js (v18.0.0 or higher)
-- npm or pnpm
+### 1. 🏠 Beranda Interaktif (*Home*)
+* Ringkasan visi, indikator cepat, dan visualisasi alur hierarki penyelamatan makanan (*Food Recovery Hierarchy*).
+* Navigasi instan menuju pelaporan surplus.
 
-### 1. Installation
+### 2. 📝 Lapor Surplus Cepat (*Report Surplus*)
+* Formulir input cerdas dengan preset siap pakai (contoh: *Nasi Kotak Katering*, *Sayuran Segar*, *Roti Sisa Toko*).
+* Pencatatan parameter keamanan pangan: jenis makanan, kuantitas/satuan, sisa jam layak aman, kondisi kemasan, status suhu penyimpanan, dan konteks kegiatan asal.
+
+### 3. ⚖️ Penilaian Cerdas & Algoritma Rescue Score (*Assessment*)
+* **Algoritma Rescue Score (0–100):** Mesin penilaian deterministik tanpa halusinasi yang mengukur viabilitas pangan berdasarkan sisa waktu, higienitas kemasan, dan stabilitas suhu.
+* **Penentuan Rute Hierarki Otomatis:**
+  * 🟢 **Distribusi Langsung:** Penyaluran makanan siap konsumsi ke bank makanan, panti, atau komunitas.
+  * 🟡 **Pengolahan Kembali (*Repurpose*):** Transformasi bahan baku/sayuran menjadi hidangan baru bernilai tambah di dapur sosial.
+  * 🟠 **Diversi Organik (Pakan Ternak / Kompos):** Penanganan biologis yang aman saat makanan sudah melampaui batas konsumsi manusia.
+* **Pencocokan Mitra Cerdas (*Smart Partner Matching*):** Menyarankan mitra terdekat dengan mempertimbangkan radius jarak, kapasitas penampungan, dan kecepatan respons penjemputan.
+
+### 4. 🚚 Alur Pelacakan Logistik (*Journey & Custody Tracking*)
+* Memantau status penanganan makanan surplus secara bertahap:
+  1. *Menunggu Konfirmasi*
+  2. *Mitra Ditugaskan*
+  3. *Dalam Penjemputan / Logistik*
+  4. *Berhasil Disalurkan & Terselamatkan*
+* Antarmuka interaktif untuk memperbarui status pengiriman secara transparan.
+
+### 5. 🌍 Kalkulator Dampak Nyata (*Impact & ESG Analytics*)
+* Mengonversi surplus makanan yang terselamatkan menjadi indikator metrik nyata:
+  * **Kilogram Pangan Terselamatkan**
+  * **Porsi Makanan Terpenuhi** (standar GFN: 0.35 kg/porsi)
+  * **Emisi $CO_2e$ yang Dicegah** (metodologi US EPA WARM: 2.5 kg $CO_2e$/kg makanan)
+  * **Nilai Ekonomi Rupiah (Rp)** yang diselamatkan dari pemborosan.
+  * **Ekuivalensi Lingkungan:** Setara pohon yang ditanam dan energi listrik yang dihemat.
+
+### 6. 💡 Wawasan Operasional & Simulator Pencegahan (*Insights & Prevention*)
+* **Deteksi Pola Surplus Berulang:** Mengidentifikasi jenis makanan yang paling sering sisa dan kegiatan/acara yang menjadi sumber utama.
+* **Rekomendasi Pencegahan Otomatis:** Menghasilkan saran operasional konkret bagi tim manajemen dapur untuk memperbaiki perencanaan pembelian bahan baku.
+* **Simulator Pengurangan Limbah (*Prevention Simulator*):** Slider interaktif untuk mensimulasikan pemotongan kelebihan belanja (5%–30%) dan langsung melihat potensi efisiensi biaya dan kilogram limbah yang dicegah sebelum dimasak.
+
+### 7. 🌐 Fitur Aksesibilitas & Arsitektur
+* **Dukungan Multi-Bahasa Lengkap (Bilingual ID 🇮🇩 / EN 🇬🇧):** Switch instan satu klik dengan ikon bendera di semua halaman.
+* **Local-First (Zero-Login):** Data tersimpan langsung dan aman di `localStorage` peramban. Sangat cepat, privat, dan siap didemokan tanpa memerlukan database eksternal.
+* **Desain Responsif:** Tampilan optimal di perangkat smartphone, tablet, maupun layar laptop/desktop.
+
+---
+
+## 🛠️ Alur Penggunaan (User Workflow)
+
+```mermaid
+flowchart TD
+    Start([Mulai Operasional Dapur]) --> Report[1. Input Data di Lapor Surplus]
+    Report --> Assess[2. Analisis di Halaman Penilaian]
+    Assess --> Score{Cek Rescue Score & Rute}
+    Score -->|Tinggi| Direct[Rute: Distribusi Langsung]
+    Score -->|Sedang| Repurpose[Rute: Pengolahan Kembali]
+    Score -->|Kritis| Compost[Rute: Kompos / Pakan Ternak]
+    Direct --> PickPartner[Pilih Mitra Penerima Terdekat]
+    Repurpose --> PickPartner
+    Compost --> PickPartner
+    PickPartner --> Journey[3. Pantau Logistik di Alur Penyelamatan]
+    Journey --> Impact[4. Tinjau Metrik Emisi di Halaman Dampak]
+    Journey --> Insights[5. Evaluasi & Simulasi Pencegahan di Wawasan]
+```
+
+---
+
+## 📁 Struktur Direktori Proyek
+
+```text
+replate/
+├── public/                 # Favicon dan aset statis SVG
+├── src/
+│   ├── assets/             # Ilustrasi & logo
+│   ├── components/         # Komponen UI modular
+│   │   ├── Button.jsx              # Tombol kustom bervariasi
+│   │   ├── EmptyState.jsx          # Tampilan saat data kosong
+│   │   ├── ErrorBoundary.jsx       # Penangkal error runtime
+│   │   ├── Footer.jsx              # Footer gelombang modern
+│   │   ├── JourneyTimeline.jsx     # Garis waktu status logistik
+│   │   ├── MatchCard.jsx           # Kartu rekomendasi mitra
+│   │   ├── Navbar.jsx              # Navigasi melayang + selector bahasa
+│   │   ├── PreventionSimulator.jsx # Simulator pencegahan surplus
+│   │   ├── ScoreBreakdown.jsx      # Visualisasi rincian skor
+│   │   └── StatusBadge.jsx         # Badge status multi-warna
+│   ├── data/               # Data benchmark, aturan, dan mitra
+│   │   ├── destinations.js         # Daftar mitra penampung terverifikasi
+│   │   ├── foods.js                # Kategori pangan & parameter keamanan
+│   │   ├── learning.js             # Data panduan pencegahan pangan
+│   │   ├── rules.js                # Aturan pembobotan rute
+│   │   └── sources.js              # Kategori asal operasional
+│   ├── engine/             # Mesin logika deterministik
+│   │   ├── matchingEngine.js       # Algoritma pencocokan mitra
+│   │   ├── rescueScore.js          # Kalkulator Rescue Score (0-100)
+│   │   └── routeEngine.js          # Penentu rute hierarki pangan
+│   ├── pages/              # Halaman utama aplikasi
+│   │   ├── Assessment.jsx          # Halaman evaluasi & pilihan rute
+│   │   ├── Home.jsx                # Halaman beranda
+│   │   ├── Impact.jsx              # Dashboard dampak ESG & emisi karbon
+│   │   ├── Insights.jsx            # Wawasan surplus & pencegahan hulu
+│   │   ├── Journey.jsx             # Pelacakan alur penyelamatan
+│   │   └── ReportSurplus.jsx       # Formulir pelaporan makanan berlebih
+│   ├── utils/              # Modul utilitas
+│   │   ├── calculations.js         # Perhitungan matematis dampak
+│   │   ├── formatters.js           # Format mata uang & tanggal
+│   │   ├── i18n.js                 # Kamus terjemahan Bahasa Indonesia & Inggris
+│   │   └── storage.js              # Manajemen penyimpanan lokal (localStorage)
+│   ├── App.jsx             # Komponen root aplikasi & state routing
+│   ├── index.css           # Konfigurasi Tailwind & gaya global
+│   └── main.jsx            # Titik masuk render React DOM
+├── index.html              # Shell HTML & Google Fonts
+├── package.json            # Daftar pustaka & skrip proyek
+├── tailwind.config.js      # Konfigurasi palet warna & tipografi
+├── vercel.json             # Konfigurasi routing SPA Vercel
+└── vite.config.js          # Konfigurasi bundler Vite
+```
+
+---
+
+## 🚀 Panduan Menjalankan Proyek secara Lokal
+
+### Kebutuhan Sistem
+* [Node.js](https://nodejs.org/) versi 18.0.0 atau lebih baru
+* npm atau yarn / pnpm
+
+### 1. Kloning Repositori
 ```bash
-# Clone or extract repository
+git clone https://github.com/rohmatulloh-pixel/replate.git
 cd replate
+```
 
-# Install dependencies
+### 2. Instalasi Dependensi
+```bash
 npm install
 ```
 
-### 2. Run Local Development Server
+### 3. Jalankan Server Pengembangan
 ```bash
 npm run dev
 ```
-Open your browser and navigate to:
+Buka peramban dan akses alamat:  
 👉 **`http://localhost:5173/`**
 
-### 3. Production Build & Preview
+### 4. Build untuk Produksi
 ```bash
-# Verify production compilation
 npm run build
-
-# Preview production build locally
 npm run preview
 ```
 
 ---
 
-## 🎯 3-Minute Competition Demonstration Walkthrough
+## 🛡️ Catatan Keamanan Pangan (*Food Safety Disclaimer*)
 
-1. **Load Sample Data:**
-   - Click the **`✨ Data Demo`** / **`✨ Sample Data`** pill button in the top right of the Navbar to populate the local database with realistic operational rescue scenarios.
-2. **Report Surplus:**
-   - Go to **`Lapor Surplus`** (`/report`).
-   - Click one of the quick preset pills (e.g., **🍱 8 kg Nasi / Rice**).
-   - Click **`Hitung Rute Penyelamatan ✨`** (**`Assess Surplus Now ✨`**).
-3. **Inspect Decision Engine:**
-   - View the calculated **Rescue Score** (e.g. 91/100 - High Priority).
-   - Review the factor breakdown bars and the recommended route (**REDISTRIBUTE**).
-   - Pick the top recommended partner: **Community Kitchen Alpha (94% Match)**.
-   - Click **`Konfirmasi & Mulai Pengiriman 🚚`** (**`Confirm Route & Dispatch 🚚`**).
-4. **Track Live Journey:**
-   - Follow the custodial timeline in **`Perjalanan`** (`/journeys`).
-   - Click **`Perbarui Status Pengiriman →`** (**`Advance Status →`**) to progress from *In Transit* to *Diterima & Terselamatkan ✅* (*Received & Rescued*).
-5. **Measure Impact:**
-   - Open **`Dampak`** (`/impact`) to see verified kilograms diverted, servings plated (GFN standard: 0.35 kg/portion), and CO₂e emissions prevented (US EPA WARM: 2.5 kg CO₂e/kg).
-6. **Operational Simulator:**
-   - Open **`Simulasi & Wawasan`** (`/insights`) to test the interactive surplus prevention simulator and see how kitchen batching trims upstream waste.
+> **REPLATE menyediakan sistem pendukung keputusan algoritmik untuk redistribusi dan pencegahan surplus makanan. Platform ini tidak menggantikan inspeksi keamanan pangan langsung di lokasi atau standar sertifikasi higienitas resmi. Keputusan redistribusi makanan siap santap harus selalu mematuhi panduan dinas kesehatan dan regulasi keamanan pangan yang berlaku.**
 
 ---
 
-## 📁 Source Code Structure
-
-```text
-replate/
-├── public/                 # Static assets (favicons, SVGs)
-├── src/
-│   ├── components/         # Reusable UI components
-│   │   ├── Button.jsx
-│   │   ├── EmptyState.jsx
-│   │   ├── ErrorBoundary.jsx
-│   │   ├── Footer.jsx
-│   │   ├── JourneyTimeline.jsx
-│   │   ├── MatchCard.jsx
-│   │   ├── Navbar.jsx
-│   │   ├── PreventionSimulator.jsx
-│   │   ├── ScoreBreakdown.jsx
-│   │   └── StatusBadge.jsx
-│   ├── data/               # Static benchmark data & rules
-│   │   ├── destinations.js
-│   │   ├── foods.js
-│   │   └── rules.js
-│   ├── engine/             # Core Deterministic Business Logic
-│   │   ├── matchingEngine.js
-│   │   ├── rescueScore.js
-│   │   └── routeEngine.js
-│   ├── pages/              # 5 Core Application Pages
-│   │   ├── Assessment.jsx
-│   │   ├── Home.jsx
-│   │   ├── Impact.jsx
-│   │   ├── Insights.jsx
-│   │   └── ReportSurplus.jsx
-│   ├── utils/              # Storage, formatting, i18n
-│   │   ├── calculations.js
-│   │   ├── formatters.js
-│   │   ├── i18n.js
-│   │   └── storage.js
-│   ├── App.jsx             # Root Application & State Sync
-│   ├── index.css           # Tailwind & Custom Utility Styles
-│   └── main.jsx            # Application Entry Point
-├── index.html              # HTML Shell & Web Fonts
-├── package.json            # Dependencies & Scripts
-├── tailwind.config.js      # Custom Theme (Teal, Sun Yellow, Fredoka font)
-└── vite.config.js          # Vite Bundler Configuration
-```
-
----
-
-## 🛡️ Food Safety & Integrity Notice
-
-> **REPLATE provides algorithmic decision-support for commercial surplus redistribution. It does not replace professional on-site food safety inspections or verified temperature holding standards. Redistribution decisions should always comply with applicable public health and food safety guidelines.**
-
----
-
-## ⚖️ License
-MIT License. Built for competition demonstration.
+## 📄 Lisensi
+Didistribusikan di bawah lisensi **MIT License**.
+Dikembangkan untuk masa depan rantai pasok pangan yang berkelanjutan dan bebas sampah.
