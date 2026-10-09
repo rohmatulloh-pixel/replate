@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircle2, ArrowRight, MapPin } from 'lucide-react';
 import { formatTime, formatDate } from '../utils/formatters';
+import { getFoodDisplayName } from '../utils/calculations';
 import Button from './Button';
 import { TRANSLATIONS, getActiveLanguage } from '../utils/i18n';
 
@@ -49,7 +50,7 @@ export default function JourneyTimeline({
             🚚 {lang === 'id' ? 'Protokol Pengiriman Makanan' : 'Rescue Journey Protocol'}
           </span>
           <h3 className="text-2xl sm:text-3xl font-display font-black text-brand-900">
-            {report.quantity} {report.unit} {report.foodName}
+            {report.quantity} {report.unit} {getFoodDisplayName(report.foodTypeId, report.foodName, lang)}
           </h3>
           <p className="text-xs font-sans font-semibold text-slate-500 mt-1">
             ID: <span className="text-slate-800 font-bold">{report.id}</span> • {formatDate(report.createdAt)}
@@ -72,7 +73,7 @@ export default function JourneyTimeline({
               {lang === 'id' ? 'Status Terkini' : 'Current Status'}
             </span>
             <span className="text-xs font-display font-black text-brand-700 uppercase">
-              {currentStatus.replace('_', ' ')} 🚚
+              {t.journey.steps[currentStatus] || currentStatus.replace('_', ' ')} 🚚
             </span>
           </div>
         )}

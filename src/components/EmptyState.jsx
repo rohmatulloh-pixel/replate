@@ -1,13 +1,12 @@
 import React from 'react';
-import { Sparkles, PlusCircle } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import Button from './Button';
 
 export default function EmptyState({
   title = 'No surplus records yet.',
   description = 'Start your first surplus report to assess rescue feasibility, calculate scores, and route to destinations.',
   actionLabel = 'Report Surplus Food',
-  onAction,
-  onLoadDemo
+  onAction
 }) {
   return (
     <div className="rounded-3xl bg-white border border-sky-100 p-10 md:p-14 text-center my-6 shadow-soft space-y-4 max-w-2xl mx-auto">
@@ -23,31 +22,19 @@ export default function EmptyState({
         {description}
       </p>
 
-      <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-        {onAction && (
+      {onAction && (
+        <div className="pt-2 flex items-center justify-center">
           <Button
             variant="sun"
             size="md"
             onClick={onAction}
             icon={PlusCircle}
-            className="w-full sm:w-auto text-xs px-6 py-2.5"
+            className="w-full sm:w-auto text-xs px-6 py-2.5 font-display font-black shadow-sun"
           >
             {actionLabel}
           </Button>
-        )}
-
-        {onLoadDemo && (
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={onLoadDemo}
-            icon={Sparkles}
-            className="w-full sm:w-auto text-xs px-6 py-2.5"
-          >
-            Load Sample Scenarios ✨
-          </Button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

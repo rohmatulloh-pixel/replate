@@ -88,11 +88,88 @@ export function calculateImpactSummary(reports = []) {
 /**
  * Generate dynamic supply-chain insights from stored reports
  */
-export function generateInsights(reports = []) {
+/**
+ * Helper to get localized food name
+ */
+export function getFoodDisplayName(foodKeyOrName, fallbackName = '', lang = 'id') {
+  if (!foodKeyOrName && !fallbackName) return lang === 'id' ? 'Makanan Surplus' : 'Surplus Food';
+  const key = String(foodKeyOrName || fallbackName).toLowerCase();
+
+  if (lang === 'id') {
+    if (key === 'cooked-rice' || key.includes('rice') || key.includes('nasi')) return 'Nasi Matang';
+    if (key === 'bread-pastries' || key.includes('bread') || key.includes('pastr') || key.includes('roti')) return 'Roti & Kue';
+    if (key === 'fresh-vegetables' || key.includes('veg') || key.includes('sayur')) return 'Sayuran Segar';
+    if (key === 'fruits' || key.includes('fruit') || key.includes('buah')) return 'Buah Segar';
+    if (key === 'prepared-meals' || key.includes('meal') || key.includes('buffet') || key.includes('matang') || key.includes('prasmanan')) return 'Makanan Siap Saji';
+    if (key === 'packaged-dry-goods' || key.includes('dry') || key.includes('sembako') || key.includes('kering')) return 'Bahan Kering';
+    if (key === 'dairy-beverages' || key.includes('dairy') || key.includes('susu') || key.includes('minum')) return 'Susu & Minuman';
+    return fallbackName || foodKeyOrName;
+  } else {
+    if (key === 'cooked-rice' || key.includes('rice') || key.includes('nasi')) return 'Cooked Rice';
+    if (key === 'bread-pastries' || key.includes('bread') || key.includes('pastr') || key.includes('roti')) return 'Bread & Pastries';
+    if (key === 'fresh-vegetables' || key.includes('veg') || key.includes('sayur')) return 'Fresh Vegetables';
+    if (key === 'fruits' || key.includes('fruit') || key.includes('buah')) return 'Fresh Fruits';
+    if (key === 'prepared-meals' || key.includes('meal') || key.includes('buffet') || key.includes('matang') || key.includes('prasmanan')) return 'Prepared Meals';
+    if (key === 'packaged-dry-goods' || key.includes('dry') || key.includes('sembako') || key.includes('kering')) return 'Packaged Dry Goods';
+    if (key === 'dairy-beverages' || key.includes('dairy') || key.includes('susu') || key.includes('minum')) return 'Dairy & Beverages';
+    return fallbackName || foodKeyOrName;
+  }
+}
+
+/**
+ * Helper to get localized source context name
+ */
+export function getSourceDisplayName(sourceKey, lang = 'id') {
+  if (!sourceKey) return lang === 'id' ? 'Dapur Komersial' : 'Commercial Kitchen';
+  const key = String(sourceKey).toLowerCase();
+
+  if (lang === 'id') {
+    if (key.includes('cater')) return 'Katering & Acara';
+    if (key.includes('rest')) return 'Restoran & Bistro';
+    if (key.includes('retail') || key.includes('ritel') || key.includes('super')) return 'Supermarket / Ritel';
+    if (key.includes('event') || key.includes('acara') || key.includes('seminar')) return 'Acara / Konferensi';
+    if (key.includes('bake') || key.includes('roti')) return 'Toko Roti & Kafe';
+    if (key.includes('school') || key.includes('sekolah') || key.includes('kantin')) return 'Kantin Sekolah';
+    if (key.includes('house') || key.includes('rumah')) return 'Rumah Tangga';
+    return sourceKey;
+  } else {
+    if (key.includes('cater')) return 'Catering & Events';
+    if (key.includes('rest')) return 'Restaurant & Bistro';
+    if (key.includes('retail') || key.includes('ritel') || key.includes('super')) return 'Retail & Grocery';
+    if (key.includes('event') || key.includes('acara') || key.includes('seminar')) return 'Events & Banquets';
+    if (key.includes('bake') || key.includes('roti')) return 'Bakery & Cafe';
+    if (key.includes('school') || key.includes('sekolah') || key.includes('kantin')) return 'School / University';
+    if (key.includes('house') || key.includes('rumah')) return 'Household';
+    return sourceKey;
+  }
+}
+
+/**
+ * Helper to get localized route name
+ */
+export function getRouteDisplayName(routeKey, lang = 'id') {
+  if (!routeKey) return lang === 'id' ? 'Distribusi Langsung' : 'Direct Redistribution';
+  const key = String(routeKey).toUpperCase();
+  if (lang === 'id') {
+    if (key === 'REDISTRIBUTE') return 'Distribusi Langsung';
+    if (key === 'PROCESS') return 'Pengolahan Ulang';
+    if (key === 'ORGANIC') return 'Daur Ulang Organik';
+    return routeKey;
+  } else {
+    if (key === 'REDISTRIBUTE') return 'Direct Redistribution';
+    if (key === 'PROCESS') return 'Secondary Processing';
+    if (key === 'ORGANIC') return 'Organic Recycling';
+    return routeKey;
+  }
+}
+
+export function generateInsights(reports = [], lang = 'id') {
   if (!reports || reports.length === 0) {
     return {
       hasData: false,
-      message: 'No surplus records available. Report a surplus or load demo data to view pattern analysis.'
+      message: lang === 'id'
+        ? 'Belum ada data surplus yang tercatat. Buat laporan surplus untuk melihat analisis pola pencegahan.'
+        : 'No surplus records available. Report a surplus to view pattern analysis.'
     };
   }
 
@@ -104,11 +181,11 @@ export function generateInsights(reports = []) {
   let scoreCount = 0;
 
   reports.forEach(r => {
-    const fName = r.foodName || r.foodTypeId || 'Unspecified';
-    foodCounts[fName] = (foodCounts[fName] || 0) + 1;
+    const fId = r.foodTypeId || r.foodName || 'other';
+    foodCounts[fId] = (foodCounts[fId] || 0) + 1;
 
-    const src = r.sourceContextId || 'General';
-    sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+    const sId = r.sourceContextId || 'General';
+    sourceCounts[sId] = (sourceCounts[sId] || 0) + 1;
 
     const route = r.recommendedRoute || 'REDISTRIBUTE';
     routeCounts[route] = (routeCounts[route] || 0) + 1;
@@ -121,22 +198,47 @@ export function generateInsights(reports = []) {
 
   const getTopKey = (obj) => {
     const sorted = Object.entries(obj).sort((a, b) => b[1] - a[1]);
-    return sorted.length > 0 ? sorted[0][0] : 'N/A';
+    return sorted.length > 0 ? sorted[0][0] : null;
   };
 
-  const topFood = getTopKey(foodCounts);
-  const topSource = getTopKey(sourceCounts);
-  const topRoute = getTopKey(routeCounts);
+  const topFoodKey = getTopKey(foodCounts);
+  const topSourceKey = getTopKey(sourceCounts);
+  const topRouteKey = getTopKey(routeCounts);
   const avgScore = scoreCount > 0 ? Math.round(totalScore / scoreCount) : 0;
 
-  // Determine structural prevention advice based on top patterns
-  let preventionTitle = `Recurrent surplus identified: ${topFood}`;
-  let preventionAdvice = `Consider reviewing production planning for ${topFood.toLowerCase()} during ${topSource.toLowerCase()} operations to minimize upstream excess before rescue is required.`;
+  // Localized representations
+  const topFood = getFoodDisplayName(topFoodKey, topFoodKey, lang);
+  const topSource = getSourceDisplayName(topSourceKey, lang);
+  const topRoute = getRouteDisplayName(topRouteKey, lang);
 
-  if (topSource === 'Catering') {
-    preventionAdvice = `Catering events show a repeated surplus of ${topFood.toLowerCase()}. Recommended action: implement a 2-stage progressive pan refill buffer to prevent unserved batch excess.`;
-  } else if (topSource === 'Restaurant') {
-    preventionAdvice = `Restaurant kitchen records show frequent ${topFood.toLowerCase()} surplus. Consider calibrating prep-station par levels during off-peak shifts.`;
+  // Determine structural prevention advice based on top patterns and language
+  let preventionTitle = '';
+  let preventionAdvice = '';
+
+  const sKeyNorm = String(topSourceKey || '').toLowerCase();
+
+  if (lang === 'id') {
+    preventionTitle = `Surplus berulang teridentifikasi: ${topFood}`;
+    if (sKeyNorm.includes('cater')) {
+      preventionAdvice = `Katering & acara menunjukkan surplus ${topFood.toLowerCase()} yang berulang. Rekomendasi tindakan: terapkan sistem buffer isi ulang wadah 2 tahap untuk mencegah kelebihan porsi yang belum tersaji.`;
+    } else if (sKeyNorm.includes('rest')) {
+      preventionAdvice = `Catatan dapur restoran menunjukkan surplus ${topFood.toLowerCase()} yang sering terjadi. Rekomendasi tindakan: kalibrasi standar porsi persiapan pada shift kerja di luar jam sibuk.`;
+    } else if (sKeyNorm.includes('bake')) {
+      preventionAdvice = `Produksi toko roti menunjukkan kelebihan ${topFood.toLowerCase()}. Rekomendasi tindakan: jadwalkan batch kedua yang lebih kecil pada sore hari.`;
+    } else {
+      preventionAdvice = `Pertimbangkan untuk meninjau perencanaan produksi untuk ${topFood.toLowerCase()} selama operasional ${topSource.toLowerCase()} guna meminimalkan kelebihan makanan di hulu sebelum perlu diselamatkan.`;
+    }
+  } else {
+    preventionTitle = `Recurrent surplus identified: ${topFood}`;
+    if (sKeyNorm.includes('cater')) {
+      preventionAdvice = `Catering events show a repeated surplus of ${topFood.toLowerCase()}. Recommended action: implement a 2-stage progressive pan refill buffer to prevent unserved batch excess.`;
+    } else if (sKeyNorm.includes('rest')) {
+      preventionAdvice = `Restaurant kitchen records show frequent ${topFood.toLowerCase()} surplus. Recommended action: calibrate prep-station par levels during off-peak shifts.`;
+    } else if (sKeyNorm.includes('bake')) {
+      preventionAdvice = `Bakery production shows regular ${topFood.toLowerCase()} surplus. Recommended action: schedule smaller progressive afternoon bake batches.`;
+    } else {
+      preventionAdvice = `Consider reviewing production planning for ${topFood.toLowerCase()} during ${topSource.toLowerCase()} operations to minimize upstream excess before rescue is required.`;
+    }
   }
 
   return {

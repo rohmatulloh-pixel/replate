@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Lightbulb } from 'lucide-react';
-import { getReports, loadDemoData } from '../utils/storage';
+import { getReports } from '../utils/storage';
 import { generateInsights } from '../utils/calculations';
 import PreventionSimulator from '../components/PreventionSimulator';
 import EmptyState from '../components/EmptyState';
@@ -17,7 +17,7 @@ export default function Insights({ onNavigate, lang = getActiveLanguage() }) {
     return () => window.removeEventListener('replate:storage-update', handleUpdate);
   }, []);
 
-  const insights = generateInsights(reports);
+  const insights = generateInsights(reports, lang);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
@@ -46,14 +46,10 @@ export default function Insights({ onNavigate, lang = getActiveLanguage() }) {
 
       {!insights.hasData ? (
         <EmptyState
-          title={lang === 'id' ? 'Belum cukup data surplus' : 'Not enough surplus logs yet'}
-          description={lang === 'id' ? 'Laporkan beberapa makanan surplus terlebih dahulu agar pola dan analisis pencegahan dapat dihitung.' : 'Report surplus food first so operational patterns and prevention analytics can be calculated.'}
+          title={lang === 'id' ? 'Belum Ada Data Surplus' : 'No Surplus Records Yet'}
+          description={lang === 'id' ? 'Laporkan makanan surplus terlebih dahulu agar pola operasional dan analisis pencegahan otomatis dapat dihitung.' : 'Report surplus food first so operational patterns and automated prevention recommendations can be calculated.'}
           actionLabel={t.nav.reportButton}
           onAction={() => onNavigate('report')}
-          onLoadDemo={() => {
-            loadDemoData();
-            setReports(getReports());
-          }}
         />
       ) : (
         <>

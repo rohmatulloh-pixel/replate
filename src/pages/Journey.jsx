@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
-import { getReports, updateJourneyStatus, deleteReport, loadDemoData } from '../utils/storage';
+import { getReports, updateJourneyStatus, deleteReport } from '../utils/storage';
+import { getFoodDisplayName } from '../utils/calculations';
 import JourneyTimeline from '../components/JourneyTimeline';
 import EmptyState from '../components/EmptyState';
 import Button from '../components/Button';
@@ -87,10 +88,6 @@ export default function Journey({ onNavigate, lang = getActiveLanguage() }) {
           description={t.journey.emptyDesc}
           actionLabel={t.nav.reportButton}
           onAction={() => onNavigate('report')}
-          onLoadDemo={() => {
-            loadDemoData();
-            refreshReports();
-          }}
         />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -144,7 +141,7 @@ export default function Journey({ onNavigate, lang = getActiveLanguage() }) {
                             {rep.quantity} {rep.unit}
                           </span>
                           <span className="text-xs font-sans font-extrabold text-slate-800">
-                            {rep.foodName}
+                            {getFoodDisplayName(rep.foodTypeId, rep.foodName, lang)}
                           </span>
                         </div>
                         <span className="text-xs font-display text-slate-500 block">

@@ -7,17 +7,17 @@ import { TRANSLATIONS, getActiveLanguage } from '../utils/i18n';
 export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage() }) {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.id;
 
-  const [activePreset, setActivePreset] = useState('default');
+  const [activePreset, setActivePreset] = useState('');
   const [userEditedNotes, setUserEditedNotes] = useState(false);
 
   const [formData, setFormData] = useState(() => ({
     foodTypeId: 'cooked-rice',
-    quantity: '8',
+    quantity: '',
     unit: 'kg',
     conditionId: 'suitable',
     timeWindowId: '1_3h',
     sourceContextId: 'Catering',
-    notes: t.report.defaultNotes || 'Disimpan dalam wadah tertutup bersih food-grade dengan suhu aman.'
+    notes: ''
   }));
 
   const [errors, setErrors] = useState({});

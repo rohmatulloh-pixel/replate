@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sparkles, MapPin, ArrowRight } from 'lucide-react';
 import Button from '../components/Button';
+import { getReports } from '../utils/storage';
+import { getFoodDisplayName, getRouteDisplayName } from '../utils/calculations';
 import { TRANSLATIONS, getActiveLanguage } from '../utils/i18n';
 
 export default function Home({ onNavigate, lang = getActiveLanguage() }) {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.id;
+  const [reports, setReports] = useState(() => getReports());
+
+  useEffect(() => {
+    const handleUpdate = () => setReports(getReports());
+    window.addEventListener('replate:storage-update', handleUpdate);
+    return () => window.removeEventListener('replate:storage-update', handleUpdate);
+  }, []);
 
   const topicStreams = [
     { id: 'cooked-rice', name: t.streams.cookedRice, icon: '🍚', color: 'from-amber-100 to-amber-200 text-amber-900 border-amber-300', tag: t.streams.cookedRiceTag },
@@ -156,85 +165,80 @@ export default function Home({ onNavigate, lang = getActiveLanguage() }) {
           </Button>
         </div>
 
-        {/* 4 Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {[
-            {
-              title: lang === 'id' ? 'Nasi Kotak Katering' : 'Catering Luncheon Rice',
-              qty: '8.0 KG',
-              icon: '🍱',
-              bgGrad: 'from-amber-400 to-orange-400',
-              badge: lang === 'id' ? '⭐ Prioritas Tinggi' : '⭐ High Priority',
-              badgeColor: 'bg-emerald-100 text-emerald-800',
-              destination: 'Community Kitchen Alpha',
-              status: lang === 'id' ? 'Sedang Diantar 🚚' : 'In Transit 🚚',
-            },
-            {
-              title: lang === 'id' ? 'Sayur Segar Resto' : 'Bistro Fresh Vegetables',
-              qty: '4.2 KG',
-              icon: '🥦',
-              bgGrad: 'from-emerald-400 to-teal-500',
-              badge: lang === 'id' ? 'Distribusi Langsung' : 'Direct Redistribute',
-              badgeColor: 'bg-teal-100 text-teal-800',
-              destination: 'Civic Shelter Program C',
-              status: lang === 'id' ? 'Sudah Diterima ✅' : 'Delivered & Plated ✅',
-            },
-            {
-              title: lang === 'id' ? 'Roti Sourdough Bakery' : 'Artisan Sourdough Loaves',
-              qty: '3.0 KG',
-              icon: '🥖',
-              bgGrad: 'from-yellow-400 to-amber-500',
-              badge: lang === 'id' ? 'Pengolahan Ulang' : 'Secondary Processing',
-              badgeColor: 'bg-amber-100 text-amber-800',
-              destination: 'Transformation Hub E',
-              status: lang === 'id' ? 'Diolah Jadi Crouton ✅' : 'Upcycled to Croutons ✅',
-            },
-            {
-              title: lang === 'id' ? 'Prasmanan Acara Seminar' : 'Conference Dinner Buffet',
-              qty: '9.4 KG',
-              icon: '🍲',
-              bgGrad: 'from-sky-400 to-indigo-500',
-              badge: lang === 'id' ? '⭐ Prioritas Tinggi' : '⭐ High Priority',
-              badgeColor: 'bg-emerald-100 text-emerald-800',
-              destination: 'Community Kitchen Alpha',
-              status: lang === 'id' ? '27 Porsi Disajikan ✅' : '27 Servings Plated ✅',
-            }
-          ].map((item, idx) => (
-            <div
-              key={idx}
-              onClick={() => onNavigate('journeys')}
-              className="bg-white rounded-3xl border border-slate-100 shadow-soft hover:shadow-card hover:-translate-y-1 transition-all cursor-pointer overflow-hidden flex flex-col justify-between"
-            >
-              <div className={`h-36 bg-gradient-to-tr ${item.bgGrad} flex flex-col items-center justify-center p-4 relative`}>
-                <span className="text-5xl drop-shadow-md">{item.icon}</span>
-                <span className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-white/90 font-display font-bold text-xs text-slate-800 shadow-sm">
-                  {item.qty}
-                </span>
-              </div>
+        {/* Dynamic User Reports or Clean Zero-Data State */}
+        {reports.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {reports.slice(0, 4).map((item) => {
+              const isDone = item.journeyStatus === 'RECEIVED';
+              const fName = getFoodDisplayName(item.foodTypeId, item.foodName, lang);
+              const rName = getRouteDisplayName(item.recommendedRoute, lang);
+              const statusLabel = isDone
+                ? (lang === 'id' ? 'Selesai Disajikan ✅' : 'Delivered & Plated ✅')
+                : (lang === 'id' ? 'Sedang Diantar 🚚' : 'In Transit 🚚');
 
-              <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-display font-bold text-base text-slate-800 leading-tight">
-                    {item.title}
-                  </h3>
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-1">
-                    <MapPin className="w-3.5 h-3.5 text-brand-600 shrink-0" />
-                    <span className="truncate">{item.destination}</span>
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => onNavigate('journeys')}
+                  className="bg-white rounded-3xl border border-slate-100 shadow-soft hover:shadow-card hover:-translate-y-1 transition-all cursor-pointer overflow-hidden flex flex-col justify-between"
+                >
+                  <div className="h-32 bg-gradient-to-tr from-teal-400 to-sky-400 flex flex-col items-center justify-center p-4 relative text-white">
+                    <span className="text-4xl drop-shadow-md">🍲</span>
+                    <span className="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-white/95 font-display font-black text-xs text-brand-900 shadow-sm">
+                      {item.quantity} {item.unit}
+                    </span>
+                  </div>
+
+                  <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-display font-extrabold text-base text-slate-800 leading-tight truncate">
+                        {fName}
+                      </h3>
+                      <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-1">
+                        <MapPin className="w-3.5 h-3.5 text-brand-600 shrink-0" />
+                        <span className="truncate">{item.selectedDestination?.name || (lang === 'id' ? 'Menunggu Penjemputan' : 'Pending Intake')}</span>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                      <span className="px-2.5 py-0.5 rounded-full font-display font-extrabold text-[10px] bg-teal-100 text-brand-800">
+                        {rName}
+                      </span>
+                      <span className="text-[10px] font-display font-bold text-slate-600">
+                        {statusLabel}
+                      </span>
+                    </div>
                   </div>
                 </div>
-
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className={`px-2.5 py-0.5 rounded-full font-display font-bold text-[10px] ${item.badgeColor}`}>
-                    {item.badge}
-                  </span>
-                  <span className="text-[10px] font-display font-bold text-slate-600">
-                    {item.status}
-                  </span>
-                </div>
-              </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="bg-white rounded-3xl border border-sky-100 p-8 sm:p-12 text-center shadow-soft max-w-2xl mx-auto space-y-4">
+            <div className="w-16 h-16 mx-auto bg-sky-100 rounded-full flex items-center justify-center text-3xl">
+              🚚
             </div>
-          ))}
-        </div>
+            <h3 className="text-xl sm:text-2xl font-display font-black text-brand-900">
+              {lang === 'id' ? 'Belum Ada Operasi Penyelamatan' : 'No Active Rescue Operations'}
+            </h3>
+            <p className="text-xs sm:text-sm font-sans font-semibold text-slate-500 max-w-md mx-auto leading-relaxed">
+              {lang === 'id'
+                ? 'Dapur Anda belum memiliki catatan surplus yang sedang berjalan. Mulai laporkan makanan berlebih untuk menghubungkan porsi berharga ke mitra penerima terdekat.'
+                : 'Your kitchen does not have any active surplus rescues running. Report surplus food now to route wholesome meals to nearby community partners.'}
+            </p>
+            <div className="pt-2">
+              <Button
+                variant="sun"
+                size="md"
+                onClick={() => onNavigate('report')}
+                icon={Sparkles}
+                className="text-xs px-6 py-2.5 font-display font-black shadow-sun"
+              >
+                {t.nav.reportButton} ✨
+              </Button>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* =========================================================
@@ -247,12 +251,12 @@ export default function Home({ onNavigate, lang = getActiveLanguage() }) {
             <div className="md:col-span-5 flex justify-center">
               <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-gradient-to-tr from-sun-400 via-brand-400 to-sky-400 p-2 shadow-card flex items-center justify-center">
                 <div className="w-full h-full rounded-full bg-white flex flex-col items-center justify-center text-center p-6 space-y-2">
-                  <span className="text-5xl">🍱</span>
+                  <span className="text-5xl">🍲</span>
                   <span className="text-xl font-display font-black text-brand-900">
-                    8.0 KG RICE
+                    REPLATE
                   </span>
                   <span className="text-xs font-display font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800">
-                    91 Score • High Priority
+                    {lang === 'id' ? 'Deterministik & Cepat' : 'Deterministic & Fast'}
                   </span>
                 </div>
               </div>

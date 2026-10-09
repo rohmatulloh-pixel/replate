@@ -39,9 +39,9 @@ export default function PreventionSimulator({ lang = getActiveLanguage() }) {
             className="w-full accent-brand-500 cursor-pointer h-2.5 bg-white rounded-full"
           />
           <div className="flex justify-between text-[11px] font-display font-bold text-slate-500 mt-2">
-            <span>20 (Bistro)</span>
-            <span>250 (Banquet)</span>
-            <span>500 (Event)</span>
+            <span>20 ({lang === 'id' ? 'Kafe/Bistro' : 'Bistro'})</span>
+            <span>250 ({lang === 'id' ? 'Prasmanan' : 'Banquet'})</span>
+            <span>500 ({lang === 'id' ? 'Acara Besar' : 'Event'})</span>
           </div>
         </div>
 
@@ -59,9 +59,9 @@ export default function PreventionSimulator({ lang = getActiveLanguage() }) {
             className="w-full accent-sun-500 cursor-pointer h-2.5 bg-white rounded-full"
           />
           <div className="flex justify-between text-[11px] font-display font-bold text-slate-500 mt-2">
-            <span>5% (Strict)</span>
-            <span>15% (Typical)</span>
-            <span>30% (High Buffer)</span>
+            <span>5% ({lang === 'id' ? 'Ketat' : 'Strict'})</span>
+            <span>15% ({lang === 'id' ? 'Umum' : 'Typical'})</span>
+            <span>30% ({lang === 'id' ? 'Buffer Tinggi' : 'High Buffer'})</span>
           </div>
         </div>
       </div>

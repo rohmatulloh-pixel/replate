@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sparkles } from 'lucide-react';
-import { getReports, loadDemoData } from '../utils/storage';
+import { getReports } from '../utils/storage';
 import { TRANSLATIONS, getActiveLanguage, setActiveLanguage } from '../utils/i18n';
 
 // Real SVG Flags for cross-platform support (Windows laptops, macOS, iOS, Android)
@@ -162,18 +162,15 @@ export default function Navbar({ activePage, onNavigate }) {
             </span>
           </button>
 
-          {/* Quick Demo Data Pill */}
+          {/* Action CTA Button */}
           <button
             type="button"
-            onClick={() => {
-              loadDemoData();
-              window.dispatchEvent(new Event('replate:storage-update'));
-            }}
-            className="px-4 py-2 rounded-full text-xs font-display font-extrabold bg-sun-500 hover:bg-sun-600 text-amber-950 border-2 border-sun-300 transition-all shadow-sun flex items-center gap-1.5 hover:scale-105 active:scale-95"
-            title="Load sample scenarios"
+            onClick={() => handleNavClick('report')}
+            className="px-4 py-2 rounded-full text-xs font-display font-black bg-sun-500 hover:bg-sun-600 text-amber-950 border border-sun-300 transition-all shadow-sun flex items-center gap-1.5 hover:scale-105 active:scale-95 cursor-pointer"
+            title={t.nav.reportButton}
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-900" />
-            <span>{t.nav.sampleData}</span>
+            <span>{t.nav.reportButton}</span>
           </button>
         </div>
 
@@ -241,12 +238,11 @@ export default function Navbar({ activePage, onNavigate }) {
             <button
               type="button"
               onClick={() => {
-                loadDemoData();
-                setMobileMenuOpen(false);
+                handleNavClick('report');
               }}
-              className="w-full py-2.5 rounded-full text-xs font-display font-extrabold bg-sun-500 hover:bg-sun-600 text-amber-950 border-2 border-sun-300 shadow-sun"
+              className="w-full py-2.5 rounded-full text-xs font-display font-black bg-sun-500 hover:bg-sun-600 text-amber-950 border-2 border-sun-300 shadow-sun flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              ✨ {t.nav.sampleData}
+              ✨ {t.nav.reportButton}
             </button>
           </div>
         </div>

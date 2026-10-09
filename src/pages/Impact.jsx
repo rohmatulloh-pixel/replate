@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getReports, loadDemoData } from '../utils/storage';
+import { getReports } from '../utils/storage';
 import { calculateImpactSummary } from '../utils/calculations';
 import EmptyState from '../components/EmptyState';
 import Button from '../components/Button';
@@ -49,10 +49,6 @@ export default function Impact({ onNavigate, lang = getActiveLanguage() }) {
           description={t.journey.emptyDesc}
           actionLabel={t.nav.reportButton}
           onAction={() => onNavigate('report')}
-          onLoadDemo={() => {
-            loadDemoData();
-            setReports(getReports());
-          }}
         />
       ) : (
         <>
