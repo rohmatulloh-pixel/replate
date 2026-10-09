@@ -55,9 +55,7 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col selection:bg-teal-200 selection:text-teal-950 text-slate-800 font-sans ${
-      activePage === 'home' ? 'bg-[#BAE6FD]' : 'bg-[#F0F9FF]'
-    }`}>
+    <div className="min-h-screen flex flex-col bg-[#F0F9FF] selection:bg-teal-200 selection:text-teal-950 text-slate-800 font-sans">
       {/* Main Floating Rounded Navbar with Language Switcher */}
       <Navbar activePage={activePage} onNavigate={navigateTo} />
 
