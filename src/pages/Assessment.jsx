@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { calculateRescueScore } from '../engine/rescueScore';
 import { determineRoute } from '../engine/routeEngine';
 import { matchDestinations } from '../engine/matchingEngine';
@@ -458,9 +459,18 @@ export default function Assessment({
       />
 
       {/* Explicit Confirmation Dialog for Organic Dispatch of REJECT Food */}
-      {confirmOrganicModalOpen && targetOrganicDestination && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
-          <div className="bg-white rounded-3xl border border-slate-100 max-w-lg w-full p-6 sm:p-8 shadow-card space-y-5">
+      {confirmOrganicModalOpen && targetOrganicDestination && createPortal(
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn"
+          onClick={() => setConfirmOrganicModalOpen(false)}
+          role="presentation"
+        >
+          <div 
+            className="bg-white rounded-3xl border border-slate-100 max-w-lg w-full p-6 sm:p-8 shadow-card space-y-5 animate-scaleUp"
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center gap-3 text-amber-800">
               <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-6 h-6 text-amber-700" />
@@ -507,7 +517,8 @@ export default function Assessment({
               </Button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
