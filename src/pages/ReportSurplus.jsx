@@ -369,12 +369,17 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
 
         {/* Field 02: Quantity & Unit */}
         <div className="space-y-3">
-          <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800">
+          <label 
+            htmlFor="surplus-quantity" 
+            className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800"
+          >
             {t.report.f2} <span className="text-coral-500">*</span>
           </label>
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
               <input
+                id="surplus-quantity"
+                name="quantity"
                 type="number"
                 step="0.1"
                 min="0.1"
@@ -704,10 +709,15 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
           {showAdvancedSafety && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
               <div>
-                <label className="block text-[11px] font-display font-bold text-slate-600 mb-1">
+                <label 
+                  htmlFor="surplus-prepared-at" 
+                  className="block text-[11px] font-display font-bold text-slate-600 mb-1"
+                >
                   {isId ? 'Tanggal & Jam Selesai Dimasak:' : 'Cooking/Prep Datetime:'}
                 </label>
                 <input
+                  id="surplus-prepared-at"
+                  name="preparedAt"
                   type="datetime-local"
                   value={formData.preparedAt}
                   onChange={(e) => setFormData({ ...formData, preparedAt: e.target.value })}
@@ -719,10 +729,15 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
               </div>
 
               <div>
-                <label className="block text-[11px] font-display font-bold text-slate-600 mb-1">
+                <label 
+                  htmlFor="surplus-duration-hours" 
+                  className="block text-[11px] font-display font-bold text-slate-600 mb-1"
+                >
                   {isId ? 'Lama Penyimpanan (Jam):' : 'Holding Duration (Hours):'}
                 </label>
                 <input
+                  id="surplus-duration-hours"
+                  name="storageDurationHours"
                   type="number"
                   step="0.5"
                   min="0"
@@ -734,10 +749,15 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
               </div>
 
               <div>
-                <label className="block text-[11px] font-display font-bold text-slate-600 mb-1">
+                <label 
+                  htmlFor="surplus-expiry-date" 
+                  className="block text-[11px] font-display font-bold text-slate-600 mb-1"
+                >
                   {isId ? 'Tanggal Kedaluwarsa (Jika Ada):' : 'Expiry / Use-by Date:'}
                 </label>
                 <input
+                  id="surplus-expiry-date"
+                  name="expiryDate"
                   type="date"
                   value={formData.expiryDate}
                   onChange={(e) => setFormData({ ...formData, expiryDate: e.target.value })}
@@ -750,10 +770,15 @@ export default function ReportSurplus({ onSubmitReport, lang = getActiveLanguage
 
         {/* Field 06: Handling Notes */}
         <div className="space-y-2">
-          <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800">
+          <label 
+            htmlFor="surplus-notes" 
+            className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800"
+          >
             {isId ? '09. Catatan Tambahan & Wadah Simpan (Opsional)' : '09. Handling Notes (Optional)'}
           </label>
           <textarea
+            id="surplus-notes"
+            name="notes"
             rows="2"
             value={formData.notes}
             onChange={(e) => {

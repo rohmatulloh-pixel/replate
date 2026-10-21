@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { 
   X, 
@@ -44,26 +44,57 @@ export default function LoginModal({
   const [showRegPassword, setShowRegPassword] = useState(false);
 
   const [error, setError] = useState('');
+  const modalRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
     return () => setMounted(false);
   }, []);
 
-  // Lock background scroll when modal is open and synchronize incoming role/mode/prompt
+  // Lock background scroll and establish accessible keyboard trap & escape handler
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      setError('');
-      if (initialMode) setMode(initialMode);
-      if (initialRole) setRegRole(initialRole);
-    } else {
+    if (!isOpen) {
       document.body.style.overflow = '';
+      return;
     }
+
+    document.body.style.overflow = 'hidden';
+    setError('');
+    if (initialMode) setMode(initialMode);
+    if (initialRole) setRegRole(initialRole);
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        if (!modalRef.current) return;
+        const focusable = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
     return () => {
       document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, initialMode, initialRole]);
+  }, [isOpen, onClose, initialMode, initialRole]);
 
   if (!isOpen || !mounted) return null;
 
@@ -141,19 +172,21 @@ export default function LoginModal({
       onClick={onClose}
     >
       <div 
+        ref={modalRef}
         className="bg-white rounded-3xl border border-slate-100 max-w-sm sm:max-w-md w-full p-5 sm:p-6 shadow-2xl relative space-y-3.5 max-h-[92vh] overflow-y-auto"
         role="dialog"
         aria-modal="true"
+        aria-labelledby="login-modal-title"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
+        {/* Close Button with >=40px touch area */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-3.5 right-3.5 w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors"
-          aria-label="Close modal"
+          className="absolute top-3 right-3 w-9 h-9 min-w-[36px] min-h-[36px] rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors focus:ring-2 focus:ring-brand-500 focus:outline-none"
+          aria-label={isId ? 'Tutup jendela masuk' : 'Close modal'}
         >
-          <X className="w-3.5 h-3.5" />
+          <X className="w-4 h-4" />
         </button>
 
         {/* Header: Compact Brand */}
@@ -161,7 +194,7 @@ export default function LoginModal({
           <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-brand-500 to-sky-400 text-white flex items-center justify-center text-lg mx-auto shadow-sm shadow-brand-500/20">
             🍲
           </div>
-          <h2 className="text-lg sm:text-xl font-display font-black text-brand-900 tracking-tight leading-tight">
+          <h2 id="login-modal-title" className="text-lg sm:text-xl font-display font-black text-brand-900 tracking-tight leading-tight">
             {mode === 'login' ? (isId ? 'Masuk ke REPLATE' : 'Sign in to REPLATE') : (isId ? 'Daftar Akun Baru' : 'Create New Account')}
           </h2>
           <p className="text-[11px] font-sans text-slate-500 max-w-xs mx-auto leading-tight">
@@ -254,7 +287,10 @@ export default function LoginModal({
             <form onSubmit={handleLoginSubmit} className="space-y-2.5">
               {/* Identifier Input */}
               <div className="space-y-1">
-                <label className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700">
+                <label 
+                  htmlFor="login-identifier" 
+                  className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700"
+                >
                   {t.auth.usernameLabel}
                 </label>
                 <div className="relative">
@@ -262,6 +298,8 @@ export default function LoginModal({
                     <User className="w-3.5 h-3.5" />
                   </div>
                   <input
+                    id="login-identifier"
+                    name="identifier"
                     type="text"
                     value={identifier}
                     onChange={(e) => {
@@ -276,7 +314,10 @@ export default function LoginModal({
 
               {/* Password Input */}
               <div className="space-y-1">
-                <label className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700">
+                <label 
+                  htmlFor="login-password" 
+                  className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700"
+                >
                   {t.auth.passwordLabel}
                 </label>
                 <div className="relative">
@@ -284,6 +325,8 @@ export default function LoginModal({
                     <Lock className="w-3.5 h-3.5" />
                   </div>
                   <input
+                    id="login-password"
+                    name="password"
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => {
@@ -296,8 +339,8 @@ export default function LoginModal({
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-600"
-                    aria-label="Toggle password visibility"
+                    className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-600 min-w-[32px] min-h-[32px] justify-center"
+                    aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
                   >
                     {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   </button>
@@ -389,7 +432,10 @@ export default function LoginModal({
 
             {/* Full Name */}
             <div className="space-y-1">
-              <label className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700">
+              <label 
+                htmlFor="reg-name" 
+                className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700"
+              >
                 {isId ? 'Nama Lengkap / Kontak' : 'Full Name / Contact Person'} *
               </label>
               <div className="relative">
@@ -397,6 +443,8 @@ export default function LoginModal({
                   <User className="w-3.5 h-3.5" />
                 </div>
                 <input
+                  id="reg-name"
+                  name="name"
                   type="text"
                   value={regName}
                   onChange={(e) => {
@@ -411,7 +459,10 @@ export default function LoginModal({
 
             {/* Organization Name */}
             <div className="space-y-1">
-              <label className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700">
+              <label 
+                htmlFor="reg-org" 
+                className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700"
+              >
                 {isId ? 'Nama Usaha / Lembaga / Posko' : 'Organization / Brand / Kitchen'}
               </label>
               <div className="relative">
@@ -419,6 +470,8 @@ export default function LoginModal({
                   <Building className="w-3.5 h-3.5" />
                 </div>
                 <input
+                  id="reg-org"
+                  name="organization"
                   type="text"
                   value={regOrg}
                   onChange={(e) => setRegOrg(e.target.value)}
@@ -431,10 +484,15 @@ export default function LoginModal({
             {/* Username & Email in 2 columns */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div className="space-y-1">
-                <label className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700">
+                <label 
+                  htmlFor="reg-username" 
+                  className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700"
+                >
                   {isId ? 'Username' : 'Username'} *
                 </label>
                 <input
+                  id="reg-username"
+                  name="username"
                   type="text"
                   value={regUsername}
                   onChange={(e) => {
@@ -447,7 +505,10 @@ export default function LoginModal({
               </div>
 
               <div className="space-y-1">
-                <label className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700">
+                <label 
+                  htmlFor="reg-email" 
+                  className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700"
+                >
                   {isId ? 'Email' : 'Email'}
                 </label>
                 <div className="relative">
@@ -455,6 +516,8 @@ export default function LoginModal({
                     <Mail className="w-3 h-3" />
                   </div>
                   <input
+                    id="reg-email"
+                    name="email"
                     type="email"
                     value={regEmail}
                     onChange={(e) => setRegEmail(e.target.value)}
@@ -467,7 +530,10 @@ export default function LoginModal({
 
             {/* Password */}
             <div className="space-y-1">
-              <label className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700">
+              <label 
+                htmlFor="reg-password" 
+                className="block text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700"
+              >
                 {isId ? 'Kata Sandi Baru' : 'New Password'} *
               </label>
               <div className="relative">
@@ -475,6 +541,8 @@ export default function LoginModal({
                   <Lock className="w-3.5 h-3.5" />
                 </div>
                 <input
+                  id="reg-password"
+                  name="password"
                   type={showRegPassword ? 'text' : 'password'}
                   value={regPassword}
                   onChange={(e) => {
@@ -487,8 +555,8 @@ export default function LoginModal({
                 <button
                   type="button"
                   onClick={() => setShowRegPassword(!showRegPassword)}
-                  className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-600"
-                  aria-label="Toggle password visibility"
+                  className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-600 min-w-[32px] min-h-[32px] justify-center"
+                  aria-label={showRegPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
                 >
                   {showRegPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                 </button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronDown, LogOut, RefreshCw, User as UserIcon } from 'lucide-react';
-import { getReports, isDemoMode, clearDemoData, getCurrentUser, logoutUser } from '../utils/storage';
+import { getReports, isDemoMode, clearDemoData, getCurrentUser, logoutUser, getSyncStatus } from '../utils/storage';
 import { TRANSLATIONS, getActiveLanguage, setActiveLanguage } from '../utils/i18n';
 import LoginModal from './LoginModal';
 
@@ -42,6 +42,7 @@ export default function Navbar({ activePage, onNavigate }) {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [loginModalConfig, setLoginModalConfig] = useState({ role: 'supplier', mode: 'login', prompt: '' });
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [syncStatus, setSyncStatus] = useState(() => getSyncStatus());
   const profileDropdownRef = useRef(null);
 
   const [activeCount, setActiveCount] = useState(() => {
@@ -91,11 +92,17 @@ export default function Navbar({ activePage, onNavigate }) {
     window.addEventListener('replate:open-login', handleOpenLogin);
     document.addEventListener('mousedown', handleClickOutside);
 
+    const handleSyncChange = (e) => {
+      setSyncStatus(e.detail || getSyncStatus());
+    };
+    window.addEventListener('replate:sync-status', handleSyncChange);
+
     return () => {
       window.removeEventListener('replate:storage-update', syncActiveCount);
       window.removeEventListener('replate:language-change', syncLanguage);
       window.removeEventListener('replate:auth-change', syncAuth);
       window.removeEventListener('replate:open-login', handleOpenLogin);
+      window.removeEventListener('replate:sync-status', handleSyncChange);
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
@@ -379,7 +386,7 @@ export default function Navbar({ activePage, onNavigate }) {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1.5 rounded-full text-slate-700 hover:bg-slate-100 focus:outline-none"
+            className="w-11 h-11 flex items-center justify-center rounded-full text-slate-700 hover:bg-slate-100 focus:outline-none"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

@@ -470,10 +470,15 @@ export default function EmergencyDistribution({ onNavigate, lang = 'id', current
             {/* Field 2: Requested Portions & Beneficiaries */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800">
+                <label 
+                  htmlFor="emg-portions" 
+                  className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800"
+                >
                   02. {isId ? 'Jumlah Porsi Dibutuhkan (Porsi)' : 'Requested Portions'} <span className="text-rose-500">*</span>
                 </label>
                 <input
+                  id="emg-portions"
+                  name="requestedPortions"
                   type="number"
                   min="1"
                   step="1"
@@ -494,10 +499,15 @@ export default function EmergencyDistribution({ onNavigate, lang = 'id', current
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800">
+                <label 
+                  htmlFor="emg-beneficiaries" 
+                  className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800"
+                >
                   03. {isId ? 'Jumlah Penerima Manfaat (Jiwa)' : 'Beneficiary Count'} <span className="text-rose-500">*</span>
                 </label>
                 <input
+                  id="emg-beneficiaries"
+                  name="beneficiaryCount"
                   type="number"
                   min="1"
                   step="1"
@@ -536,11 +546,16 @@ export default function EmergencyDistribution({ onNavigate, lang = 'id', current
                 })}
               </div>
 
-              <div className="pt-2">
-                <label className="block text-[11px] font-display font-extrabold uppercase text-slate-600 mb-1">
+              <div className="pt-2 space-y-1">
+                <label 
+                  htmlFor="emg-deadline" 
+                  className="block text-[11px] font-display font-extrabold uppercase text-slate-600"
+                >
                   {isId ? 'Tenggat Waktu Dibutuhkan' : 'Required Deadline'}
                 </label>
                 <input
+                  id="emg-deadline"
+                  name="urgencyDeadline"
                   type="text"
                   placeholder={isId ? 'Contoh: Hari ini sebelum 12:30 WIB (Makan Siang)' : 'e.g. Today before 12:30 PM'}
                   value={formData.urgencyDeadline}
@@ -552,10 +567,15 @@ export default function EmergencyDistribution({ onNavigate, lang = 'id', current
 
             {/* Field 4: Target Location */}
             <div className="space-y-2">
-              <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800">
+              <label 
+                htmlFor="emg-location" 
+                className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800"
+              >
                 05. {isId ? 'Lokasi Posko / Dapur Tujuan Pengantaran' : 'Target Intake Facility / Shelter Location'} <span className="text-rose-500">*</span>
               </label>
               <input
+                id="emg-location"
+                name="targetLocation"
                 type="text"
                 placeholder={isId ? 'Nama posko, nama jalan, kecamatan, kota' : 'Facility name, address, district'}
                 value={formData.targetLocation}
@@ -567,10 +587,15 @@ export default function EmergencyDistribution({ onNavigate, lang = 'id', current
 
             {/* Field 5: Urgency Reason */}
             <div className="space-y-2">
-              <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800">
+              <label 
+                htmlFor="emg-reason" 
+                className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800"
+              >
                 06. {isId ? 'Alasan Kebutuhan Mendesak' : 'Urgency Reason & Context'} <span className="text-rose-500">*</span>
               </label>
               <textarea
+                id="emg-reason"
+                name="urgencyReason"
                 rows={3}
                 placeholder={isId 
                   ? 'Contoh: Kedatangan 40 warga pengungsi baru akibat luapan kali. Stok logistik beras dan lauk posko habis untuk shift siang.' 
@@ -585,10 +610,15 @@ export default function EmergencyDistribution({ onNavigate, lang = 'id', current
             {/* Field 6: Contact Person & Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800">
+                <label 
+                  htmlFor="emg-contact-person" 
+                  className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800"
+                >
                   07. {isId ? 'Koordinator / Relawan Jaga' : 'Contact Person'}
                 </label>
                 <input
+                  id="emg-contact-person"
+                  name="contactPerson"
                   type="text"
                   value={formData.contactPerson}
                   onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
@@ -597,10 +627,15 @@ export default function EmergencyDistribution({ onNavigate, lang = 'id', current
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800">
+                <label 
+                  htmlFor="emg-contact-phone" 
+                  className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800"
+                >
                   08. {isId ? 'Nomor Telepon / WhatsApp' : 'Phone / WhatsApp'} <span className="text-rose-500">*</span>
                 </label>
                 <input
+                  id="emg-contact-phone"
+                  name="contactPhone"
                   type="text"
                   value={formData.contactPhone}
                   onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
@@ -612,10 +647,15 @@ export default function EmergencyDistribution({ onNavigate, lang = 'id', current
 
             {/* Field 7: Additional Notes */}
             <div className="space-y-2">
-              <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800">
+              <label 
+                htmlFor="emg-notes" 
+                className="block text-xs font-display font-extrabold uppercase tracking-wider text-slate-800"
+              >
                 09. {isId ? 'Catatan Kebutuhan Tambahan (Opsional)' : 'Additional Notes (Optional)'}
               </label>
               <input
+                id="emg-notes"
+                name="notes"
                 type="text"
                 placeholder={isId ? 'Contoh: Kemasan kotak terpisah diutamakan, pantangan makanan bersantan' : 'e.g. Individually boxed preferred'}
                 value={formData.notes}
@@ -902,7 +942,8 @@ export default function EmergencyDistribution({ onNavigate, lang = 'id', current
               <button
                 type="button"
                 onClick={() => setSelectedRequestForMatching(null)}
-                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm"
+                className="w-9 h-9 min-w-[36px] min-h-[36px] rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"
+                aria-label={isId ? 'Tutup dialog pencocokan' : 'Close matching dialog'}
               >
                 ✕
               </button>

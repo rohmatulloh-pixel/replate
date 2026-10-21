@@ -6,6 +6,13 @@
 
 import { evaluateFoodSafetyGate } from '../engine/foodSafetyGate.js';
 import {
+  hashPassword,
+  verifyPassword,
+  generateSessionSignature,
+  validateSessionIntegrity,
+  enforceFoodSafetyGateIntegrity
+} from './security.js';
+import {
   syncReportToSupabase,
   deleteReportFromSupabase,
   syncEmergencyRequestToSupabase,
@@ -35,6 +42,34 @@ export const STORAGE_KEYS = {
 };
 
 // Custom event to sync components upon storage updates
+
+// Global sync status for Navbar and UI indicators
+let currentSyncStatus = typeof navigator !== 'undefined' && !navigator.onLine ? 'offline' : 'synced';
+
+export function getSyncStatus() {
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    return 'offline';
+  }
+  return currentSyncStatus;
+}
+
+export function setSyncStatus(status) {
+  currentSyncStatus = status;
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('replate:sync-status', { detail: status }));
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('online', () => {
+    setSyncStatus('syncing');
+    initSupabaseCloudSync().catch(() => {});
+  });
+  window.addEventListener('offline', () => {
+    setSyncStatus('offline');
+  });
+}
+
 const dispatchStorageEvent = () => {
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new Event('replate:storage-update'));
@@ -1049,7 +1084,8 @@ export function getCurrentUser() {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.USER_SESSION);
     if (!raw) return null;
-    return JSON.parse(raw);
+    const session = JSON.parse(raw);
+    return validateSessionIntegrity(session, getRegisteredUsers(), DEMO_USERS);
   } catch (err) {
     console.error('[REPLATE Storage] Error reading user session:', err);
     return null;
@@ -1117,7 +1153,7 @@ export function registerUser({ username, email, password, name, organization, ro
       id: generateUUID(),
       username: cleanUsername,
       email: cleanEmail || `${cleanUsername}@replate.id`,
-      password: cleanPassword,
+      password: hashPassword(cleanPassword),
       role: cleanRole,
       name: cleanName,
       organization: cleanOrg || (cleanRole === 'supplier' ? 'Dapur Katering Mandiri' : 'Posko Peduli Pangan'),
@@ -1146,6 +1182,7 @@ export function registerUser({ username, email, password, name, organization, ro
       organization: newUser.organization,
       avatar: newUser.avatar,
       badgeText: newUser.badgeText,
+      signature: generateSessionSignature(matchedUser),
       loggedInAt: new Date().toISOString()
     };
 
@@ -1172,7 +1209,7 @@ export function loginUser(identifier, password) {
       const u = DEMO_USERS[key];
       return (
         (u.username.toLowerCase() === cleanId || u.email.toLowerCase() === cleanId) &&
-        u.password === cleanPw
+        verifyPassword(cleanPw, u.password)
       );
     });
 
@@ -1182,7 +1219,7 @@ export function loginUser(identifier, password) {
     if (!matchedUser) {
       const registered = getRegisteredUsers();
       matchedUser = registered.find(
-        u => (u.username.toLowerCase() === cleanId || u.email?.toLowerCase() === cleanId) && u.password === cleanPw
+        u => (u.username.toLowerCase() === cleanId || u.email?.toLowerCase() === cleanId) && verifyPassword(cleanPw, u.password)
       );
     }
 
@@ -1549,6 +1586,11 @@ export function allocateSurplusToEmergencyRequest(requestId, reportId, recipient
  */
 export async function initSupabaseCloudSync() {
   if (!isRealBrowserEnvironment()) return () => {};
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    setSyncStatus('offline');
+  } else {
+    setSyncStatus('syncing');
+  }
 
   try {
     // 1. If backend API toggle is explicitly enabled, sync from Render NestJS
@@ -1781,6 +1823,7 @@ export async function initSupabaseCloudSync() {
       }
     );
 
+    setSyncStatus('synced');
     return cleanup;
   } catch (err) {
     console.warn('[REPLATE Supabase] Error during initial cloud sync:', err);

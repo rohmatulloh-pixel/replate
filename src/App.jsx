@@ -1,17 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import SupplierDashboard from './components/portals/SupplierDashboard';
-import MitraDashboard from './components/portals/MitraDashboard';
-import AdminDashboard from './components/portals/AdminDashboard';
-import ReportSurplus from './pages/ReportSurplus';
-import Assessment from './pages/Assessment';
-import Journey from './pages/Journey';
-import Impact from './pages/Impact';
-import Insights from './pages/Insights';
-import Learn from './pages/Learn';
-import EmergencyDistribution from './pages/EmergencyDistribution';
+
+// Route-based Code Splitting (Dynamic Imports) for Mobile Performance & Low Initial Bundle Size
+const SupplierDashboard = lazy(() => import('./components/portals/SupplierDashboard'));
+const MitraDashboard = lazy(() => import('./components/portals/MitraDashboard'));
+const AdminDashboard = lazy(() => import('./components/portals/AdminDashboard'));
+const ReportSurplus = lazy(() => import('./pages/ReportSurplus'));
+const Assessment = lazy(() => import('./pages/Assessment'));
+const Journey = lazy(() => import('./pages/Journey'));
+const Impact = lazy(() => import('./pages/Impact'));
+const Insights = lazy(() => import('./pages/Insights'));
+const Learn = lazy(() => import('./pages/Learn'));
+const EmergencyDistribution = lazy(() => import('./pages/EmergencyDistribution'));
+
+function PageSkeleton() {
+  return (
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-pulse space-y-6">
+      <div className="h-8 bg-sky-200/50 rounded-2xl w-48"></div>
+      <div className="h-4 bg-sky-100 rounded-xl w-72"></div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+        <div className="h-48 bg-white/70 rounded-3xl border border-sky-100 shadow-sm"></div>
+        <div className="h-48 bg-white/70 rounded-3xl border border-sky-100 shadow-sm"></div>
+        <div className="h-48 bg-white/70 rounded-3xl border border-sky-100 shadow-sm"></div>
+      </div>
+    </div>
+  );
+}
 import { saveReport, getCurrentUser, initSupabaseCloudSync, syncBackendSurplusToLocal } from './utils/storage';
 import { getActiveLanguage } from './utils/i18n';
 
@@ -131,6 +147,7 @@ export default function App() {
 
       {/* Dynamic Page Content */}
       <main className="flex-1">
+      <Suspense fallback={<PageSkeleton />}>
         {activePage === 'home' && (
           currentUser?.role === 'supplier' ? (
             <SupplierDashboard onNavigate={navigateTo} lang={lang} currentUser={currentUser} />
@@ -214,7 +231,8 @@ export default function App() {
             </div>
           </div>
         )}
-      </main>
+            </Suspense>
+    </main>
 
       {/* Main Curved Wave Footer */}
       <Footer onNavigate={navigateTo} lang={lang} />

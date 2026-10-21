@@ -1,3 +1,4 @@
+import { hashPassword, enforceFoodSafetyGateIntegrity } from './security.js';
 /**
  * REPLATE Supabase Cloud Integration
  * Provides real-time synchronization, multi-device collaborative state,
@@ -174,7 +175,8 @@ export async function syncReportToSupabase(report) {
   const sb = getSupabase();
   if (!sb || !report) return null;
   try {
-    const row = mapReportToSupabaseRow(report);
+    const verifiedReport = enforceFoodSafetyGateIntegrity(report);
+    const row = mapReportToSupabaseRow(verifiedReport);
     const { data, error } = await sb
       .from('surplus_reports')
       .upsert(row, { onConflict: 'id' })
@@ -322,7 +324,7 @@ export async function syncUserToSupabase(user) {
       organization_id: orgId,
       email: user.email || `${user.username}@replate.id`,
       full_name: user.name || user.username,
-      password_hash: `plain:${user.password}`,
+      password_hash: user.password && user.password.startsWith('sha256:') ? user.password : hashPassword(user.password),
       role: user.role === 'supplier' ? 'SUPPLIER' : user.role === 'mitra' ? 'MITRA' : 'ADMIN',
       is_active: true,
       created_at: user.createdAt || now,
