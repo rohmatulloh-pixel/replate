@@ -9,7 +9,9 @@ export default function Button({
   type = 'button',
   className = '',
   icon: Icon = null,
-  iconPosition = 'left'
+  iconPosition = 'left',
+  form,
+  ...props
 }) {
   const baseStyles = 'inline-flex items-center justify-center font-bold font-display rounded-full transition-all duration-150 ease-spring transform-gpu will-change-transform touch-fast focus:outline-none focus:ring-4 focus:ring-teal-200 disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-95';
 
@@ -39,9 +41,11 @@ export default function Button({
   return (
     <button
       type={type}
+      form={form}
       onClick={onClick}
       disabled={disabled}
       className={`${baseStyles} ${variants[variant] || variants.primary} ${sizes[size] || sizes.md} ${className}`}
+      {...props}
     >
       {Icon && iconPosition === 'left' && <Icon className="w-4 h-4 shrink-0" />}
       <span>{children}</span>

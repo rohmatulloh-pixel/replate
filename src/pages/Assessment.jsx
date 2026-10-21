@@ -39,6 +39,7 @@ export default function Assessment({
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmOrganicModalOpen, setConfirmOrganicModalOpen] = useState(false);
   const [targetOrganicDestination, setTargetOrganicDestination] = useState(null);
+  const [updateToast, setUpdateToast] = useState(null);
 
   // Editable local state in case user modifies parameters inside Assessment
   const [currentReport, setCurrentReport] = useState(() => pendingReport || {
@@ -106,11 +107,23 @@ export default function Assessment({
 
 
   const handleUpdateSafetyParameters = (updatedFields) => {
-    setCurrentReport(prev => ({
-      ...prev,
-      ...updatedFields
-    }));
+    setCurrentReport(prev => {
+      const next = {
+        ...prev,
+        ...updatedFields
+      };
+      if (updatedFields.foodTypeId && updatedFields.foodTypeId !== prev.foodTypeId) {
+        next.foodName = getFoodDisplayName(updatedFields.foodTypeId, prev.foodName, currentLang);
+      }
+      return next;
+    });
     setSelectedDestinationId(null);
+    setUpdateToast(isId 
+      ? 'Parameter pemeriksaan berhasil disimpan! Status Food Safety Gate telah diperbarui.' 
+      : 'Inspection parameters saved successfully! Food Safety Gate has been re-evaluated.');
+    setTimeout(() => {
+      setUpdateToast(null);
+    }, 6000);
   };
 
   const handleSelectDestination = (destination, matchScore) => {
@@ -200,6 +213,23 @@ export default function Assessment({
           </Button>
         </div>
       </div>
+
+      {/* Dynamic Toast Feedback when Parameters Updated */}
+      {updateToast && (
+        <div className="p-4 rounded-2xl bg-teal-50 border-2 border-brand-300 text-brand-950 font-sans text-xs font-bold flex items-center justify-between gap-3 shadow-md animate-fadeIn">
+          <div className="flex items-center gap-2.5">
+            <span className="text-base">✨</span>
+            <span>{updateToast}</span>
+          </div>
+          <button 
+            type="button" 
+            onClick={() => setUpdateToast(null)} 
+            className="text-brand-700 hover:text-brand-950 text-sm font-black px-2 hover:bg-teal-100 rounded-lg transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* ======================================================== */}
       {/* 1. FOOD SAFETY GATE CARD (Mandatory Top Gatekeeper) */}
